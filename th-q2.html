@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบทดสอบภาษาไทย N-NET ชุดที่ 2 (สกร. ประถมศึกษา)</title>
+<meta name="description" content="แบบทดสอบ N-NET วิชาภาษาไทย ชุดที่ 2 ระดับประถมศึกษา สำหรับนักศึกษา สกร. พร้อมเฉลยและคำอธิบาย">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    /* Theme Colors: Orchid Purple for Thai Language (Set 2) */
+    --primary:#9333ea; --primary-dark:#6b21a8; --primary-light:#f3e8ff; --primary-mid:#a855f7;
+    --green:#3B6D11; --green-light:#EAF3DE; --green-mid:#97C459;
+    --red:#A32D2D; --red-light:#FCEBEB; --red-mid:#F09595;
+    --amber:#633806; --amber-light:#FAEEDA;
+    --gray-bg:#f5f4f0; --gray-card:#fff; --gray-border:rgba(0,0,0,0.12);
+    --gray-surface:#f0ede6; --text:#1a1a1a; --text-muted:#666; --text-hint:#999;
+  }
+  body{font-family:'Sarabun',sans-serif;background:var(--gray-bg);min-height:100vh;color:var(--text)}
+  .wrap{max-width:680px;margin:0 auto;padding:16px}
+
+  /* Header */
+  .header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);border-radius:18px;padding:24px;margin-bottom:14px;color:#fff;position:relative;overflow:hidden}
+  .header::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.07)}
+  .header::after{content:'';position:absolute;bottom:-20px;right:40px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.05)}
+  .badge{display:inline-block;background:rgba(255,255,255,0.2);border-radius:99px;padding:4px 14px;font-size:12px;font-weight:600;margin-bottom:10px;letter-spacing:.5px}
+  .htitle{font-size:24px;font-weight:700;margin-bottom:5px}
+  .hsub{font-size:14px;opacity:.85}
+
+  /* Progress */
+  .prog-card{background:var(--gray-card);border-radius:12px;border:1px solid var(--gray-border);padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:16px}
+  .prog-info{flex:1}
+  .prog-lbl{font-size:12px;color:var(--text-muted);margin-bottom:6px}
+  .prog-bg{background:var(--gray-surface);border-radius:99px;height:8px}
+  .prog-fill{background:linear-gradient(90deg,var(--primary),var(--primary-mid));border-radius:99px;height:8px;transition:width .4s ease}
+  .prog-right{text-align:right}
+  .prog-num{font-size:14px;font-weight:700;color:var(--text)}
+  .prog-sub{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+  /* Question card */
+  .q-card{background:var(--gray-card);border-radius:18px;border:1px solid var(--gray-border);padding:24px;margin-bottom:14px}
+  .q-badge{font-size:11px;color:var(--primary-mid);font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
+  .q-num-circle{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--primary-light);color:var(--primary);font-size:14px;font-weight:700;margin-bottom:12px}
+  .q-text{font-size:18px;font-weight:600;line-height:1.65;margin-bottom:16px;color:var(--text)}
+  .q-context{background:var(--gray-surface);border-left:3px solid var(--primary-mid);border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--text-muted);margin-bottom:18px;font-style:italic;line-height:1.75}
+
+  /* Choices */
+  .choices{display:flex;flex-direction:column;gap:9px}
+  .choice{background:var(--gray-card);border:1.5px solid var(--gray-border);border-radius:12px;padding:13px 16px;text-align:left;cursor:pointer;font-size:15px;font-family:'Sarabun',sans-serif;color:var(--text);transition:all .15s;display:flex;align-items:center;gap:12px;line-height:1.5;width:100%}
+  .choice:hover:not(:disabled){background:var(--primary-light);border-color:var(--primary-mid);color:var(--primary)}
+  .choice.selected{background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:500}
+  .choice.correct{background:var(--green-light);border-color:var(--green);color:var(--green)}
+  .choice.wrong{background:var(--red-light);border-color:var(--red);color:var(--red)}
+  .choice:disabled{cursor:not-allowed}
+  .cletter{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;background:var(--gray-surface);color:var(--text-muted);transition:all .15s}
+  .choice.selected .cletter{background:var(--primary);color:#fff}
+  .choice.correct .cletter{background:var(--green);color:#fff}
+  .choice.wrong .cletter{background:var(--red);color:#fff}
+
+  /* Feedback */
+  .feedback{border-radius:12px;padding:14px 16px;font-size:14px;margin-top:14px;line-height:1.7;display:none}
+  .feedback.show{display:block}
+  .feedback.ok{background:var(--green-light);color:var(--green);border:1px solid var(--green-mid)}
+  .feedback.no{background:var(--red-light);color:var(--red);border:1px solid var(--red-mid)}
+  .feedback strong{font-weight:700}
+  .fb-explain{font-size:13px;margin-top:6px;display:block;opacity:.85}
+
+  /* Nav */
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
+  .btn{padding:11px 26px;border-radius:10px;border:0;font-size:15px;font-weight:600;font-family:'Sarabun',sans-serif;cursor:pointer;transition:all .15s}
+  .btn-primary{background:var(--primary);color:#fff}
+  .btn-primary:hover{background:var(--primary-dark)}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+  .btn-secondary{background:var(--gray-surface);color:var(--text-muted);border:1px solid var(--gray-border)}
+  .btn-secondary:hover{background:#e4e1d8}
+
+  /* Dot nav */
+  .dotnav{display:flex;gap:5px;flex-wrap:wrap;padding:4px 2px}
+  .dot{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;transition:all .12s;border:none;font-family:'Sarabun',sans-serif}
+  .dot-idle{background:var(--gray-surface);color:var(--text-muted)}
+  .dot-active{background:var(--primary);color:#fff;transform:scale(1.1)}
+  .dot-ok{background:var(--green);color:#fff}
+  .dot-no{background:var(--red);color:#fff}
+
+  /* Result */
+  .result-wrap{background:var(--gray-card);border-radius:18px;border:1px solid var(--gray-border);padding:32px 24px;text-align:center}
+  .result-icon{font-size:64px;margin-bottom:14px;display:block}
+  .score-big{font-size:56px;font-weight:700;color:var(--primary);line-height:1}
+  .score-denom{font-size:22px;color:var(--text-muted);margin-bottom:6px}
+  .score-pct{font-size:20px;font-weight:600;color:var(--text);margin-bottom:8px}
+  .grade-pill{display:inline-block;padding:5px 20px;border-radius:99px;font-size:14px;font-weight:700;margin-bottom:16px}
+  .grade-A{background:var(--green-light);color:var(--green)}
+  .grade-B{background:var(--primary-light);color:var(--primary-dark)}
+  .grade-C{background:var(--amber-light);color:var(--amber)}
+  .grade-D{background:var(--red-light);color:var(--red)}
+  .result-msg{font-size:15px;color:var(--text-muted);margin-bottom:20px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 24px}
+  .sbox{background:var(--gray-surface);border-radius:10px;padding:14px 8px;text-align:center}
+  .snum{font-size:26px;font-weight:700}
+  .snum.green{color:var(--green)}
+  .snum.red{color:var(--red)}
+  .snum.theme{color:var(--primary)}
+  .slbl{font-size:12px;color:var(--text-muted);margin-top:3px}
+  .btn-retry{background:var(--primary);color:#fff;padding:13px 36px;border-radius:12px;border:0;font-size:17px;font-weight:700;font-family:'Sarabun',sans-serif;cursor:pointer;margin-bottom:28px;transition:background .15s}
+  .btn-retry:hover{background:var(--primary-dark)}
+
+  /* Review */
+  .review-title{font-size:17px;font-weight:700;padding-bottom:10px;border-bottom:1px solid var(--gray-border);margin-bottom:14px;text-align:left}
+  .ri{padding:14px 0;border-bottom:1px solid var(--gray-border);text-align:left}
+  .ri:last-child{border-bottom:none}
+  .ri-q{font-size:14px;font-weight:600;margin-bottom:7px;line-height:1.55;display:flex;gap:8px;align-items:flex-start}
+  .ri-tick{width:20px;height:20px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;margin-top:1px}
+  .ri-ok{background:var(--green-light);color:var(--green)}
+  .ri-no{background:var(--red-light);color:var(--red)}
+  .ri-user{font-size:13px;color:var(--text-muted);margin-bottom:3px}
+  .ri-correct{font-size:13px;color:var(--green);font-weight:600;margin-bottom:3px}
+  .ri-exp{font-size:12px;color:var(--text-hint);line-height:1.6}
+
+  /* Start screen */
+  .start-wrap{background:var(--gray-card);border-radius:18px;border:1px solid var(--gray-border);padding:32px 24px;text-align:center}
+  .start-icon{font-size:72px;display:block;margin-bottom:16px}
+  .start-title{font-size:26px;font-weight:700;margin-bottom:8px}
+  .start-sub{font-size:15px;color:var(--text-muted);line-height:1.75;margin-bottom:22px}
+  .pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}
+  .pill{background:var(--primary-light);color:var(--primary);border-radius:99px;padding:5px 16px;font-size:13px;font-weight:600}
+  .topic-box{background:var(--gray-surface);border-radius:12px;padding:16px;margin-bottom:24px;text-align:left}
+  .topic-head{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text)}
+  .topic-row{font-size:14px;color:var(--text-muted);padding:4px 0;display:flex;align-items:center;gap:9px}
+  .topic-dot{width:7px;height:7px;border-radius:50%;background:var(--primary-mid);flex-shrink:0}
+  .btn-start{background:var(--primary);color:#fff;padding:15px 48px;border-radius:14px;border:0;font-size:19px;font-weight:700;font-family:'Sarabun',sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(147,51,234,.3);transition:all .15s}
+  .btn-start:hover{background:var(--primary-dark);transform:translateY(-2px)}
+
+  @media(max-width:480px){
+    .wrap{padding:10px}
+    .htitle{font-size:20px}
+    .q-text{font-size:16px}
+    .choice{font-size:14px}
+    .score-big{font-size:44px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="badge">สกร. • ระดับประถมศึกษา (N-NET)</div>
+    <div class="htitle">🇹🇭 แบบทดสอบภาษาไทย [ชุดที่ 2]</div>
+    <div class="hsub">Thai Language Quiz Set 2 — 20 ข้อ • ฝึกฝนหลักภาษา การอ่านจับใจความ และหลักการเขียน</div>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script>
+const Q=[
+  {id:1,cat:"การอ่าน",q:"ป้ายเตือนรูปสามเหลี่ยมมีรูปคนกำลังเดินข้ามถนน หมายถึงอะไร?",ctx:"",c:["ห้ามคนเดินข้ามถนน","มีทางม้าลายหรือคนข้ามถนนข้างหน้า ให้ขับรถระมัดระวัง","พื้นที่สำหรับจอดรถยนต์","เขตอันตรายห้ามเข้าเด็ดขาด"],a:1,exp:"ป้ายเตือนรูปคนข้ามถนน เตือนให้ผู้ขับขี่ชะลอความเร็วและระมัดระวังคนข้ามทางข้างหน้า"},
+  {id:2,cat:"หลักภาษาไทย",q:"คำขวัญ 'ประหยัดน้ำวันละนิด ช่วยวิกฤตชาติต้นทุน' มุ่งเน้นรณรงค์ในเรื่องใด?",ctx:"",c:["การออมเงินฝากธนาคาร","การอนุรักษ์ทรัพยากรน้ำ","การปลูกป่าทดแทน","การประหยัดพลังงานไฟฟ้า"],a:1,exp:"คำขวัญกล่าวถึงการประหยัดน้ำ ซึ่งเป็นรูปแบบหนึ่งของการประหยัดและอนุรักษ์ทรัพยากรธรรมชาติ"},
+  {id:3,cat:"การเขียน",q:"คำในข้อใดเขียนสะกดคำได้ถูกต้องตรงตามพจนานุกรม?",ctx:"",c:["กระตือล้น","กะตือรือร้น","กระตือรือร้น","กระตือรือล้น"],a:2,exp:"คำที่ถูกต้องคือ 'กระตือรือร้น' (ใช้ กระ- และ ร้น ไม่ใช่ ล้น)"},
+  {id:4,cat:"หลักภาษาไทย",q:"สำนวน 'น้ำขึ้นให้รีบตัก' มีความหมายตรงกับข้อใด?",ctx:"",c:["เมื่อมีโอกาสดีควรรีบทำ","ให้รีบกักเก็บน้ำไว้ใช้ตอนหน้าแล้ง","การทำงานเฉพาะตอนเช้าตรู่","อย่าทำอะไรเกินตัวเกินกำลัง"],a:0,exp:"'น้ำขึ้นให้รีบตัก' หมายถึง เมื่อมีโอกาสดีๆ ผ่านเข้ามาในชีวิต ควรรีบคว้าและลงมือทำทันที"},
+  {id:5,cat:"หลักภาษาไทย",q:"คำลักษณะนามในข้อใดใช้เรียกเครื่องดนตรีประเภท 'ขลุ่ย' 1 เล่ม?",ctx:"",c:["อัน","เล่ม","แท่ง","เลา"],a:3,exp:"'เลา' เป็นลักษณนามที่ใช้เรียกเครื่องดนตรีประเภทเป่าที่มีลักษณะเป็นท่อกลวง เช่น ขลุ่ย หรือ ปี่"},
+  {id:6,cat:"การสื่อสาร",q:"ข้อใดเป็นคำอุทานที่แสดงอารมณ์ 'ตกใจหรือประหลาดใจ'?",ctx:"",c:["อ๋อ!","โถ!","ว้าย!","ไชโย!"],a:2,exp:"'ว้าย!' หรือ 'อุ๊ย!' เป็นคำอุทานแสดงอาการตกใจ ส่วน 'โถ' แสดงความสงสาร และ 'ไชโย' แสดงความดีใจ"},
+  {id:7,cat:"หลักภาษาไทย",q:"จากประโยค 'ชาวนาเกี่ยวข้าวในนา' คำใดทำหน้าที่เป็น 'กรรม' ของประโยค?",ctx:"",c:["ชาวนา","เกี่ยว","ข้าว","ในนา"],a:2,exp:"'ข้าว' เป็นผู้ถูกกระทำ (ถูกชาวนาเกี่ยว) จึงทำหน้าที่เป็นกรรมของประโยคนี้"},
+  {id:8,cat:"การอ่าน",q:"'ฝรั่งมีวิตามินซีสูงมาก ช่วยสร้างภูมิคุ้มกันและทำให้ผิวพรรณดี' จากข้อความนี้ ข้อใดไม่ใช่ประโยชน์ของฝรั่งที่ระบุไว้?",ctx:"",c:["ช่วยสร้างภูมิคุ้มกันให้ร่างกาย","ช่วยทำให้ผิวพรรณดี","มีวิตามินซีในปริมาณสูง","ช่วยลดราคาสินค้าเกษตรในตลาด"],a:3,exp:"การลดราคาสินค้าเกษตรไม่ได้ระบุอยู่ในข้อความ และไม่ใช่อรรถประโยชน์ทางโภชนาการของผลไม้"},
+  {id:9,cat:"การเขียน",q:"ในการเขียนจดหมายส่วนตัวถึงเพื่อนสนิท คำลงท้ายที่เหมาะสมและนิยมใช้คือข้อใด?",ctx:"",c:["ด้วยความเคารพอย่างสูง","รักและคิดถึง","ขอแสดงความนับถือ","กราบเรียนด้วยความเคารพ"],a:1,exp:"'รักและคิดถึง' เป็นคำลงท้ายที่เป็นกันเอง แสดงถึงความสนิทสนม เหมาะสำหรับการเขียนจดหมายถึงเพื่อน"},
+  {id:10,cat:"หลักภาษาไทย",q:"คำราชาศัพท์ในข้อใดมีความหมายว่า 'หัวใจ' สำหรับพระมหากษัตริย์?",ctx:"",c:["พระเศียร","พระหัตถ์","พระโอษฐ์","พระราชหฤทัย"],a:3,exp:"'พระราชหฤทัย' หมายถึง หัวใจ (พระเศียร = หัว, พระหัตถ์ = มือ, พระโอษฐ์ = ปาก)"},
+  {id:11,cat:"การอ่าน",q:"ข้อความในข้อใดจัดเป็น 'ข้อคิดเห็น' (ไม่ใช่ข้อเท็จจริง)?",ctx:"",c:["ประเทศไทยมี 3 ฤดูกาลหลัก","จังหวัดเชียงใหม่อยู่ทางภาคเหนือของไทย","วิชาภาษาไทยเรียนสนุกและง่ายที่สุด","ดวงอาทิตย์ขึ้นในตอนเช้าทางทิศตะวันออก"],a:2,exp:"ความรู้สึกว่าเรียนสนุกและง่ายเป็นมุมมองและรสนิยมส่วนบุคคล จึงถือว่าเป็นข้อคิดเห็น"},
+  {id:12,cat:"หลักภาษาไทย",q:"คำว่า 'ขยัน' มีความหมายตรงกันข้ามกับคำในข้อใดมากที่สุด?",ctx:"",c:["ประหยัด","ซื่อสัตย์","ขี้เกียจ","อดทน"],a:2,exp:"'ขี้เกียจ' หรือเกียจคร้าน มีความหมายขัดแย้งตรงข้ามกับคำว่า 'ขยัน' หรือพากเพียร"},
+  {id:13,cat:"การสื่อสาร",q:"เมื่อผู้อื่นให้ความช่วยเหลือหรือมอบสิ่งของให้ นักศึกษาควรกล่าวคำสุภาพในข้อใดกับผู้ใหญ่?",ctx:"",c:["ขอบใจจ้า","ขอบคุณครับ/ค่ะ","เออ ดีมากเลย","วางไว้ตรงนั้นแหละเดี๋ยวไปเอา"],a:1,exp:"'ขอบคุณ' ตามด้วยหางเสียงครับ/ค่ะ เป็นคำสุภาพที่ใช้แสดงความซาบซึ้งใจต่อผู้ใหญ่หรือผู้มีอายุมากกว่า"},
+  {id:14,cat:"หลักภาษาไทย",q:"คำในข้อใดเป็น 'คำพ้องรูป' (เขียนเหมือนกัน แต่อ่านออกเสียงและมีความหมายต่างกัน)?",ctx:"",c:["เพลา (เวลา / แกนล้อ)","กาล - การ","บาท - บาตร","ซ่อม - ส้อม"],a:0,exp:"'เพลา' เขียนเหมือนกัน แต่อ่านได้สองแบบคือ เพ-ลา (เวลา) และ เพลา (แกนล้อ) จึงเป็นคำพ้องรูป"},
+  {id:15,cat:"การเขียน",q:"เครื่องหมายวรรคตอน ' ฯลฯ ' เรียกว่าอะไร และมีประโยชน์อย่างไร?",ctx:"",c:["ไปยาลใหญ่ ใช้ละข้อความข้างท้ายที่อยู่ในประเภทเดียวกันซึ่งยังมีอีกมาก","ไปยาลน้อย ใช้ย่อคำให้สั้นลง","อัศเจรีย์ ใช้แสดงความอุทานหรือตกใจ","สัญประกาศ ใช้ขีดเส้นใต้ข้อความสำคัญ"],a:0,exp:"' ฯลฯ ' เรียกว่า ไปยาลใหญ่ อ่านว่า 'และอื่นๆ' หรือ 'ฯลฯ' ใช้ต่อท้ายรายการที่มีลักษณะเดียวกันซึ่งยังมีอีกมาก"},
+  {id:16,cat:"การอ่าน",q:"ส่วนประกอบใดบน 'ฉลากยา' ที่ผู้ใช้ต้องอ่านอย่างรอบคอบเพื่อป้องกันอันตรายจากการกินยาเกินขนาด?",ctx:"",c:["ชื่อบริษัทหรือโรงงานผู้ผลิต","วิธีใช้ คำเตือน และขนาดรับประทาน","ราคาจำหน่ายและส่วนลด","รูปภาพกราฟิกประกอบบนซอง"],a:1,exp:"วิธีใช้และขนาดรับประทานบอกปริมาณการยาที่ปลอดภัย ส่วนคำเตือนจะช่วยป้องกันผลข้างเคียงที่เป็นอันตราย"},
+  {id:17,cat:"การอ่าน",q:"หากต้องการค้นหาความหมายของคำศัพท์ภาษาไทยที่ถูกต้องและเป็นทางการที่สุด ควรค้นหาจากแหล่งใด?",ctx:"",c:["พจนานุกรม ฉบับราชบัณฑิตยสถาน","นิตยสารแฟชั่นและบันเทิงรายวัน","เว็บบอร์ดแสดงความคิดเห็นทั่วไป","หนังสือการ์ตูนแปลต่างประเทศ"],a:0,exp:"พจนานุกรมฉบับราชบัณฑิตยสถานเป็นแหล่งอ้างอิงมาตรฐานทางภาษาที่ถูกต้องที่สุดของประเทศไทย"},
+  {id:18,cat:"หลักภาษาไทย",q:"คำว่า 'ใจดี' มีเสียงสระคล้องจองกับคำแรกของกลุ่มคำในข้อใด?",ctx:"",c:["มีรี","ไปเที่ยว","ขยัน","พูดเพราะ"],a:0,exp:"คำว่า 'ดี' สะกดด้วยสระอี คล้องจองกับคำว่า 'มี' ซึ่งสะกดด้วยสระอีเหมือนกันตามหลักคำคล้องจอง"},
+  {id:19,cat:"หลักภาษาไทย",q:"ข้อใดจัดเป็นประโยคคำถามที่คาดหวังต้องการคำตอบจากผู้ฟัง?",ctx:"",c:["ใครจะไปเที่ยวพัทยาก็ได้ตามใจ","เธอจะไปเรียนหนังสือเมื่อไหร่","ฉันไม่รู้จริงๆ ว่าเขาชอบกินอะไร","ไม่มีใครยอมทำงานที่เหนื่อยยากนี้"],a:1,exp:"'เธอจะไปเรียนหนังสือเมื่อไหร่' มีเจตนาถามเพื่อต้องการคำตอบเกี่ยวกับเวลาอย่างชัดเจน"},
+  {id:20,cat:"การอ่าน",q:"ส่วนประกอบใดของเล่มรายงานที่สรุปเนื้อหา ความเป็นมา และวัตถุประสงค์ในการจัดทำไว้ที่หน้าแรกๆ?",ctx:"",c:["บรรณานุกรม","ภาคผนวก","คำนำ","สารบัญ"],a:2,exp:"'คำนำ' คือส่วนที่ผู้เขียนบอกเล่าระบุถึงเหตุผล วัตถุประสงค์ และภาพรวมของหนังสือหรือรายงานเล่มนั้นๆ"}
+];
+const totalQ = Q.length;
+const L=['A','B','C','D'];
+let s={screen:'start',cur:0,ans:Array(totalQ).fill(null),done:Array(totalQ).fill(false)};
+function score(){return s.ans.reduce((t,a,i)=>t+(a===Q[i].a?1:0),0)}
+function render(){document.getElementById('app').innerHTML=s.screen==='start'?startH():s.screen==='result'?resultH():quizH()}
+
+function startH(){
+  return `<div class="start-wrap">
+    <span class="start-icon">🇹🇭</span>
+    <div class="start-title">แบบทดสอบภาษาไทย [ชุดที่ 2]</div>
+    <div class="start-sub">แนวข้อสอบ N-NET สำหรับ สกร. ระดับประถมศึกษา<br>คลังโจทย์ชุดใหม่เพิ่มเติมอีก 20 ข้อ</div>
+    <div class="pills">
+      <span class="pill">📝 ${totalQ} ข้อใหม่</span>
+      <span class="pill">✅ ตรวจคำตอบเรียลไทม์</span>
+      <span class="pill">🏆 ระบบสรุปผลวิเคราะห์</span>
+      <span class="pill">🔄 ทบทวนได้ตลอดเวลา</span>
+    </div>
+    <div class="topic-box">
+      <div class="topic-head">ทักษะที่จะได้รับการทดสอบ:</div>
+      ${['สำนวนไทย คำพ้องรูป และคำลักษณนาม','การแยกแยะข้อเท็จจริงและข้อคิดเห็น','การอ่านสัญลักษณ์และส่วนประกอบในรายงาน','ความรู้คำราชาศัพท์และประโยคเพื่อการสื่อสาร'].map(t=>`<div class="topic-row"><span class="topic-dot"></span>${t}</div>`).join('')}
+    </div>
+    <button class="btn-start" onclick="go()">เริ่มทำแบบทดสอบชุดที่ 2 ▶</button>
+  </div>`}
+
+function quizH(){
+  const q=Q[s.cur],pct=Math.round(((s.cur+1)/totalQ)*100),done=s.done[s.cur],sel=s.ans[s.cur];
+  const choices=q.c.map((c,i)=>{
+    let cls='choice'+(done?(i===q.a?' correct':(i===sel&&sel!==q.a?' wrong':'')):(i===sel?' selected':''));
+    return `<button class="${cls}"${done?' disabled':''} onclick="pick(${i})"><span class="cletter">${L[i]}</span>${c}</button>`;
+  }).join('');
+  const fb=done?`<div class="feedback ${sel===q.a?'ok':'no'} show">${sel===q.a?'✅ <strong>ถูกต้อง!</strong>':'❌ <strong>ยังไม่ถูกต้อง</strong> — คำตอบที่ถูกคือ <strong>'+q.c[q.a]+'</strong>'}<span class="fb-explain">💡 ${q.exp}</span></div>`:'';
+  const navLeft=s.cur>0?`<button class="btn btn-secondary" onclick="prev()">← ย้อนกลับ</button>`:`<div></div>`;
+  const navRight=done?(s.cur===totalQ-1?`<button class="btn btn-primary" onclick="result()">ดูผลคะแนนชุดนี้ 🏆</button>`:`<button class="btn btn-primary" onclick="next()">ถัดไป →</button>`):(`<button class="btn btn-primary"${sel===null?' disabled':''} onclick="${sel!==null?'confirm()':''}">ตรวจคำตอบ ✓</button>`);
+  const dots=Q.map((_,i)=>{let c=i===s.cur?'dot-active':s.done[i]?(s.ans[i]===Q[i].a?'dot-ok':'dot-no'):'dot-idle';return`<button class="dot ${c}" onclick="jump(${i})">${i+1}</button>`}).join('');
+  return `
+    <div class="prog-card">
+      <div class="prog-info">
+        <div class="prog-lbl">ข้อที่ ${s.cur+1} จาก ${totalQ} [ชุดที่ 2]</div>
+        <div class="prog-bg"><div class="prog-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="prog-right"><div class="prog-num">${s.cur+1}/${totalQ}</div><div class="prog-sub">✅ ${s.ans.filter(a=>a!==null).length} ตอบแล้ว</div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-badge">${q.cat}</div>
+      <div class="q-num-circle">${s.cur+1}</div>
+      ${q.ctx?`<div class="q-context">${q.ctx}</div>`:''}
+      <div class="q-text">${q.q}</div>
+      <div class="choices">${choices}</div>
+      ${fb}
+      <div class="nav">${navLeft}${navRight}</div>
+    </div>
+    <div class="dotnav">${dots}</div>`}
+
+function resultH(){
+  const sc=score(),pct=Math.round(sc/totalQ*100);
+  let grade,gc,msg,icon;
+  if(pct>=80){grade='ดีมาก (A)';gc='grade-A';msg='สุดยอดครับ! ทำคะแนนชุดที่ 2 ได้เยี่ยมยอดมาก';icon='🏆'}
+  else if(pct>=60){grade='ดี (B)';gc='grade-B';msg='เก่งมากครับ คุณเข้าใจหลักภาษาไทยเป็นอย่างดี';icon='⭐'}
+  else if(pct>=50){grade='พอใช้ (C)';gc='grade-C';msg='ผ่านเกณฑ์แบบหวุดหวิด ทบทวนข้อผิดพลาดเพิ่มเติมนะครับ';icon='📘'}
+  else{grade='ต้องปรับปรุง (D)';gc='grade-D';msg='ไม่เป็นไรนะคตรับ ลองกลับไปศึกษาคำอธิบายแล้วทำใหม่อีกครั้ง';icon='📖'}
+  const review=Q.map((q,i)=>{
+    const ok=s.ans[i]===q.a,ua=s.ans[i]!==null?q.c[s.ans[i]]:'(ไม่ตอบ)';
+    return`<div class="ri"><div class="ri-q"><span class="ri-tick ${ok?'ri-ok':'ri-no'}">${ok?'✓':'✗'}</span>ข้อ ${i+1}: ${q.q}</div><div class="ri-user">คุณตอบ: ${ua}</div><div class="ri-correct">✅ เฉลย: ${q.c[q.a]}</div><div class="ri-exp">💡 ${q.exp}</div></div>`}).join('');
+  return `
+  <div class="result-wrap">
+    <span class="result-icon">${icon}</span>
+    <div class="score-big">${sc}</div>
+    <div class="score-denom">จาก ${totalQ} ข้อ (ชุดที่ 2)</div>
+    <div class="score-pct">${pct}%</div>
+    <span class="grade-pill ${gc}">${grade}</span>
+    <div class="result-msg">${msg}</div>
+    <div class="stats">
+      <div class="sbox"><div class="snum green">${sc}</div><div class="slbl">ตอบถูก</div></div>
+      <div class="sbox"><div class="snum red">${totalQ-sc}</div><div class="slbl">ตอบผิด</div></div>
+      <div class="sbox"><div class="snum theme">${pct}%</div><div class="slbl">คะแนน</div></div>
+    </div>
+    <button class="btn-retry" onclick="reset()">🔄 ทำแบบทดสอบชุดที่ 2 อีกครั้ง</button>
+    <div class="review-title">📋 เฉลยและคำอธิบายอย่างละเอียด (ชุดที่ 2)</div>
+    ${review}
+  </div>`}
+
+function go(){s.screen='quiz';render()}
+function pick(i){if(s.done[s.cur])return;s.ans[s.cur]=i;render()}
+function confirm(){if(s.ans[s.cur]===null)return;s.done[s.cur]=true;render()}
+function next(){if(s.cur<totalQ-1){s.cur++;render()}}
+function prev(){if(s.cur>0){s.cur--;render()}}
+function jump(i){s.cur=i;render()}
+function result(){s.screen='result';render()}
+function reset(){s={screen:'start',cur:0,ans:Array(totalQ).fill(null),done:Array(totalQ).fill(false)};render()}
+render();
+</script>
+</body>
+</html>
