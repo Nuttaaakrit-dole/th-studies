@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบทดสอบ N-NET ภาษาไทย ประถมศึกษา (ชุดที่ 3)</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0284c7; --primary-dark: #0c4a6e; --primary-light: #f0f9ff;
+    --green: #166534; --green-light: #f0fdf4;
+    --red: #991b1b; --red-light: #fef2f2;
+    --gray-bg: #f8fafc; --gray-card: #ffffff; --gray-border: #e2e8f0;
+    --text: #0f172a; --text-muted: #475569;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Sarabun', sans-serif; background: var(--gray-bg); color: var(--text); padding-bottom: 60px; }
+  .container { max-width: 680px; margin: 0 auto; padding: 16px; }
+  
+  .header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 16px; padding: 24px; color: #fff; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(2,132,199,0.15); }
+  .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+  .title { font-size: 22px; font-weight: 700; margin-bottom: 5px; line-height: 1.4; }
+  .subtitle { font-size: 14px; opacity: 0.9; }
+
+  .card { background: var(--gray-card); border-radius: 16px; padding: 24px; border: 1px solid var(--gray-border); margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+  
+  .inp-group { margin-bottom: 16px; text-align: left; }
+  .inp-label { display: block; font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+  .inp-text { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--gray-border); font-family: 'Sarabun', sans-serif; font-size: 16px; background: #fdfdfd; }
+  
+  .btn { width: 100%; padding: 14px; border-radius: 10px; border: none; font-family: 'Sarabun', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:disabled { background: #cbd5e1; cursor: not-allowed; }
+  .btn-secondary { background: #e2e8f0; color: var(--text); width: 48%; }
+  
+  .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; }
+  .nav-buttons .btn-primary { width: 48%; }
+
+  .prog-text { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .prog-bar { background: #e2e8f0; height: 10px; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+  .prog-fill { background: var(--primary); height: 100%; width: 0%; transition: 0.3s; }
+
+  .q-badge { font-size: 12px; color: var(--primary-dark); background: var(--primary-light); display: inline-block; padding: 4px 10px; border-radius: 6px; font-weight: 700; margin-bottom: 12px; }
+  .q-text { font-size: 17px; font-weight: 600; margin-bottom: 20px; line-height: 1.6; }
+
+  .choices { display: flex; flex-direction: column; gap: 12px; }
+  .choice { display: flex; align-items: center; background: #fff; border: 2px solid var(--gray-border); padding: 14px 16px; border-radius: 12px; cursor: pointer; font-size: 15px; font-family: 'Sarabun', sans-serif; text-align: left; transition: 0.2s; width: 100%; min-height: 60px; }
+  
+  .choice.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
+  .choice.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+  .choice.wrong { border-color: var(--red); background: var(--red-light); color: var(--red); font-weight: 600; }
+  
+  .c-let { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 50%; margin-right: 15px; font-weight: 700; font-size: 14px; flex-shrink: 0; color: var(--text-muted); }
+  .choice.selected .c-let { background: var(--primary); color: #fff; }
+  .choice.correct .c-let { background: var(--green); color: #fff; }
+  .choice.wrong .c-let { background: var(--red); color: #fff; }
+
+  .feedback { padding: 16px; border-radius: 12px; font-size: 14px; line-height: 1.6; margin-top: 16px; }
+  .feedback.ok { background: var(--green-light); border: 1px solid var(--green); color: var(--green); }
+  .feedback.no { background: var(--red-light); border: 1px solid var(--red); color: var(--red); }
+  .fb-explain { font-size: 13px; color: #334155; background: rgba(255,255,255,0.7); padding: 10px; border-radius: 8px; margin-top: 10px; display: block; border-left: 3px solid var(--text-muted); }
+  
+  .analysis-card { background: #ffffff; border: 1px solid var(--gray-border); border-radius: 16px; padding: 24px; text-align: left; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+  .analysis-header { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .analysis-item { background: #f8fafc; padding: 12px 16px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #cbd5e1; }
+  .analysis-item.weak { border-left-color: var(--red); background: #fff5f5; }
+  .analysis-item.good { border-left-color: var(--green); background: #f6fdf9; }
+  .analysis-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 4px; }
+  .analysis-tag.weak { background: var(--red-light); color: var(--red); }
+  .analysis-tag.good { background: var(--green-light); color: var(--green); }
+
+  .grid-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
+  .stat-box { background: #f8fafc; padding: 16px 10px; border-radius: 12px; text-align: center; border: 1px solid var(--gray-border); }
+  .stat-num { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+  .stat-num.green { color: var(--green); }
+  .stat-num.red { color: var(--red); }
+  .stat-num.blue { color: var(--primary); }
+  
+  .review-item { padding: 16px 0; border-bottom: 1px solid var(--gray-border); text-align: left; }
+  .review-item:last-child { border-bottom: none; }
+  .r-q { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .r-a { font-size: 14px; margin-bottom: 4px; }
+  .ri-tick { display: inline-block; width: 20px; font-weight: bold; margin-right: 5px; }
+  .ri-tick.ok { color: var(--green); }
+  .ri-tick.no { color: var(--red); }
+
+  .dot-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; justify-content: center; }
+  .dot { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--gray-border); font-family: 'Sarabun'; font-weight: 600; font-size: 12px; cursor: pointer; background: #fff; color: var(--text); }
+  .dot.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .dot.ok { background: var(--green-light); color: var(--green); border-color: var(--green); }
+  .dot.no { background: var(--red-light); color: var(--red); border-color: var(--red); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="badge">N-NET • สกร. ประถมศึกษา (ชุดที่ 3)</div>
+    <div class="title">🇹🇭 แบบทดสอบวิชาภาษาไทย (ระดับประยุกต์ใช้/คิดวิเคราะห์)</div>
+    <div class="subtitle" id="subtitle-text">เน้นการจับใจความ สำนวน สื่อสิ่งพิมพ์ และหลักการใช้ภาษาที่จำเป็นในชีวิตประจำวัน</div>
+  </div>
+  
+  <div id="app"></div>
+</div>
+
+<script>
+const database = [
+  {
+    cat: "การอ่านจับใจความและวิเคราะห์ข้อเท็จจริง",
+    q: "อ่านข้อความต่อไปนี้แล้วตอบคำถาม<br><i>'การดื่มน้ำมะนาวผสมน้ำอุ่นตอนเช้าช่วยกระตุ้นระบบขับถ่ายและทำให้ผิวพรรณสดใส แต่ผู้ป่วยโรคกระเพาะอาหารควรระมัดระวังเพราะกรดจากมะนาวอาจทำให้เกิดการระคายเคืองได้'</i><br>ข้อใดคือ <strong>'ข้อเท็จจริง'</strong> ที่ปรากฏในข้อความนี้",
+    choices: [
+      "ทุกคนควรดื่มน้ำมะนาวผสมน้ำอุ่นทุกเช้าเพื่อสุขภาพที่ดี",
+      "น้ำมะนาวมีกรดที่อาจส่งผลกระทบต่อผู้ป่วยโรคกระเพาะอาหาร",
+      "การดื่มน้ำมะนาวตอนเช้าเป็นวิธีที่ดีที่สุดในการลดความอ้วน",
+      "รสเปรี้ยวของมะนาวช่วยรักษาโรคกระเพาะอาหารให้หายขาดได้"
+    ],
+    a: 1,
+    exp: "ข้อเท็จจริงคือสิ่งที่มีหลักฐาน พิสูจน์ได้ตามหลักวิทยาศาสตร์ ซึ่งในข้อความระบุชัดเจนว่ามะนาวมีกรดที่อาจระคายเคืองกระเพาะอาหาร ส่วนช้อยส์อื่นเป็นการสรุปเกินจริงหรือเป็นข้อคิดเห็น"
+  },
+  {
+    cat: "การอ่านจับใจความและวิเคราะห์ข้อเท็จจริง",
+    q: "พาดหัวข่าวในข้อใดที่แสดง <strong>'ข้อคิดเห็น'</strong> ของผู้เขียนข่าวชัดเจนที่สุด",
+    choices: [
+      "พายุฤดูร้อนถล่มบ้านเรือนประชาชนเสียหายกว่า ๕๐ หลังคาเรือน",
+      "ราคาน้ำมันปรับตัวลดลงลิตรละ ๖๐ สตางค์ มีผลวันพรุ่งนี้",
+      "รัฐบาลเตรียมแจกเงินอุดหนุนช่วยเหลือกลุ่มเปราะบางรอบใหม่",
+      "น่าสลดใจ! วัยรุ่นซิ่งรถจักรยานยนต์ฝ่าไฟแดงชนรถยนต์บาดเจ็บสาหัส"
+    ],
+    a: 3,
+    exp: "คำว่า 'น่าสลดใจ!' เป็นการใส่ความรู้สึกและอารมณ์ร่วมของผู้เขียนลงไปในข่าว จึงจัดเป็นข้อคิดเห็น ส่วนข้ออื่นเป็นการรายงานเหตุการณ์หรือตัวเลขที่เป็นข้อเท็จจริง"
+  },
+  {
+    cat: "การอ่านจับใจความและวิเคราะห์ข้อเท็จจริง",
+    q: "หากนักศึกษาต้องการหาข้อมูลที่เชื่อถือได้เกี่ยวกับ <strong>'สถานการณ์ฝุ่น PM 2.5 รายวัน'</strong> ในพื้นที่ของตนเอง ควรเลือกอ่านข้อมูลจากแหล่งใดจึงจะประยุกต์ใช้ได้อย่างปลอดภัยที่สุด",
+    choices: [
+      "โพสต์แชร์ต่อๆ กันในกลุ่มเฟซบุ๊กชุมชน",
+      "แอปพลิเคชันหรือเว็บบอร์ดรายงานสภาพอากาศของกรมควบคุมมลพิษ",
+      "ข้อความเตือนภัยในไลน์ที่ส่งมาจากเพื่อนสนิท",
+      "คลิปวิดีโอแสดงความคิดเห็นของยูทูบเบอร์สายท่องเที่ยว"
+    ],
+    a: 1,
+    exp: "กรมควบคุมมลพิษเป็นหน่วยงานรัฐที่มีเครื่องมือวัดมาตรฐาน ข้อมูลที่ได้จึงเป็นข้อเท็จจริงที่เชื่อถือได้มากที่สุดในการนำมาวางแผนชีวิตประจำวัน"
+  },
+  {
+    cat: "การอ่านจับใจความและวิเคราะห์ข้อเท็จจริง",
+    q: "<i>'แก้วตาไปจ่ายตลาดเห็นป้ายประกาศ: <strong>ไข่ไก่สดจากฟาร์ม แผงละ ๑๐๐ บาท เฉพาะสมาชิกวันนี้เท่านั้น</strong>'</i><br>หากแก้วตาไม่ได้เป็นสมาชิกและไปซื้อวันพรุ่งนี้ ข้อใดวิเคราะห์ได้ถูกต้องที่สุด",
+    choices: [
+      "แก้วตาจะซื้อไข่ไก่ได้ในราคาแผงละ ๑๐๐ บาทเหมือนเดิม",
+      "แก้วตาจะซื้อไข่ไก่ไม่ได้เลยเพราะร้านขายเฉพาะสมาชิกเท่านั้น",
+      "แก้วตาอาจต้องซื้อไข่ไก่ในราคาที่สูงกว่าแผงละ ๑๐๐ บาท",
+      "แก้วตาจะได้ลดราคาเพิ่มขึ้นเนื่องจากเลยกำหนดวันจัดกิจกรรมแล้ว"
+    ],
+    a: 2,
+    exp: "ป้ายระบุเงื่อนไข 'แผงละ ๑๐๐ บาท เฉพาะสมาชิกวันนี้เท่านั้น' ดังนั้นเมื่อแก้วตาไม่ได้เป็นสมาชิกและมาซื้อวันอื่น ราคาจึงต้องปรับเปลี่ยนเป็นราคาปกติ (ซึ่งมักจะสูงกว่าราคาโปรโมชัน)"
+  },
+  {
+    cat: "การอ่านจับใจความและวิเคราะห์ข้อเท็จจริง",
+    q: "<i>'สมชายต้องการซ่อมแซมพัดลมที่บ้าน จึงหยิบคู่มือมาอ่านตรงส่วนที่ระบุว่า: <strong>คำเตือน! ถอดปลั๊กทุกครั้งก่อนทำความสะอาดหรือซ่อมแซมเครื่องกรองและใบพัด</strong>'</i><br>เพราะเหตุใดคู่มือจึงต้องเน้นย้ำข้อความนี้",
+    choices: [
+      "เพื่อป้องกันไม่ให้พัดลมกินกระแสไฟฟ้ามากเกินไป",
+      "เพื่อป้องกันอุบัติเหตุจากกระแสไฟฟ้ารั่วหรือใบพัดหมุนโดนร่างกาย",
+      "เพื่อช่วยยืดอายุการใช้งานของปลั๊กไฟให้ยาวนานขึ้น",
+      "เพื่อความสะดวกในการเคลื่อนย้ายพัดลมไปซ่อมในที่สว่าง"
+    ],
+    a: 1,
+    exp: "เป็นคำเตือนเพื่อความปลอดภัยในชีวิต (Safety Notice) เพื่อป้องกันอันตรายร้ายแรงจากไฟฟ้าช็อตหรือมอเตอร์ทำงานกะทันหันระหว่างซ่อมแซม"
+  },
+  {
+    cat: "หลักการใช้ภาษาไทยและการสะกดคำ",
+    q: "ข้อใดเขียนสะกดคำได้ถูกต้อง <strong>'ทุกคำ'</strong> (ตามพจนานุกรมฉบับราชบัณฑิตยสถาน)",
+    choices: [
+      "กะเพรา, ไอศกรีม, อนุญาต",
+      "กระเพรา, ไอศครีม, อนุญาต",
+      "กะเพรา, ไอศครีม, อนุมัติ",
+      "กระเพรา, ไอศกรีม, อนุญาติ"
+    ],
+    a: 0,
+    exp: "คำที่มักเขียนผิดบ่อย: 'กะเพรา' (ไม่มี ร ควบกล้ำในคำว่า กะ), 'ไอศกรีม' (ใช้ ก ไก่), 'อนุญาต' (ไม่มีสระอุตรง ต เต่า)"
+  },
+  {
+    cat: "หลักการใช้ภาษาไทยและการสะกดคำ",
+    q: "ประโยคในข้อใดมีการใช้คำลักษณนาม <strong>'ไม่ถูกต้อง'</strong>",
+    choices: [
+      "ที่บ้านของฉันมีเลื่อยสำหรับตัดไม้จำนวน ๒ ปูด",
+      "คุณครูแจกกระดาษรายงานให้นักศึกษาคนละ ๒ แผ่น",
+      "สมศรีซื้อแหวนทองคำหัวพลอยมาใหม่จำนวน ๑ วง",
+      "พระภิกษุสงฆ์เดินบิณฑบาตผ่านหน้าบ้านจำนวน ๓ รูป"
+    ],
+    a: 0,
+    exp: "ลักษณนามของ 'เลื่อย' คือ 'ปื้น' (เช่น เลื่อย ๒ ปื้น) ไม่ใช่ ปูด ช้อยส์อื่นใช้แผ่น (กระดาษ), วง (แหวน), รูป (พระสงฆ์) ได้ถูกต้องแล้ว"
+  },
+  {
+    cat: "หลักการใช้ภาษาไทยและการสะกดคำ",
+    q: "ข้อใดเลือกใช้คำสรรพนามได้เหมาะสมกับกาลเทศะและบุคคลที่สุด",
+    choices: [
+      "สมปองพูดกับพระภิกษุสงฆ์ว่า: 'โยมขออาราธนาพระคุณเจ้ารับภัตตาหารเช้าครับ'",
+      "สมหญิงพูดกับผู้ใหญ่ว่า: 'แกช่วยหยิบหนังสือเล่มนั้นให้ฉันหน่อยได้ไหม'",
+      "สมชายพูดในที่ประชุมราชการว่า: 'พวกแกทุกคนต้องตั้งใจทำงานให้มากกว่านี้'",
+      "สมหมายพูดกับแพทย์ว่า: 'ใต้อฝ่าละอองธุลีพระบาท ช่วยตรวจอาการไข้ให้กระผมด้วย'"
+    ],
+    a: 0,
+    exp: "ช้อยส์ 1 ใช้คำว่า 'โยม' และ 'พระคุณเจ้า' กับพระภิกษุสงฆ์ได้อย่างถูกต้อง เหมาะสม ช้อยส์อื่นใช้สรรพนามผิดระดับ เช่น ใช้ 'แก' กับผู้ใหญ่ หรือใช้ราชาศัพท์ระดับสูงกับแพทย์"
+  },
+  {
+    cat: "หลักการใช้ภาษาไทยและการสะกดคำ",
+    q: "ประโยคใดเป็น <strong>'ประโยคปฏิเสธ'</strong> ที่มีโครงสร้างถูกต้องชัดเจน",
+    choices: [
+      "วันนี้ฝนคงจะตกหนักอย่างแน่นอน",
+      "พี่ชายของฉันไม่ได้ไปทำงานที่จังหวัดเชียงใหม่",
+      "กรุณาอย่าส่งเสียงดังรบกวนผู้อื่นในห้องสมุด",
+      "ใครเป็นคนทำแจกันดอกไม้บนโต๊ะครูแตก"
+    ],
+    a: 1,
+    exp: "ประโยคปฏิเสธจะบอกให้ทราบว่าเรื่องราวข้อความนั้นๆ ไม่ยอมรับ โดยมักมีคำว่า 'ไม่ได้' 'ไม่' อยู่ในประโยค ส่วนช้อยส์ 3 เป็นประโยคขอร้อง/ห้าม และช้อยส์ 4 เป็นประโยคคำถาม"
+  },
+  {
+    cat: "หลักการใช้ภาษาไทยและการสะกดคำ",
+    q: "คำในข้อใดเป็นคำที่มี <strong>'อักษรควบไม่แท้'</strong> ทั้งหมด",
+    choices: [
+      "กราบพระ, ปรับปรุง",
+      "จริงใจ, ทรวดทรง",
+      "กว้างขวาง, คลี่คลาย",
+      "พลอยได้, ผลีผลาม"
+    ],
+    a: 1,
+    exp: "อักษรควบไม่แท้ คือ คำที่มีพยัญชนะ ร ควบอยู่ด้วยแต่ไม่ออกเสียง ร (เช่น จริง ออกเสียง จิง) หรือเปลี่ยนเสียงไปเป็นเสียงอื่น (เช่น ทร ออกเสียง ซ เช่น ทรวดทรง) ช้อยส์อื่นเป็นควบแท้ทั้งหมด"
+  },
+  {
+    cat: "สำนวน สุภาษิต และคำพังเพย",
+    q: "<i>'วิชัยแอบนำความลับและแผนงานของบริษัทตนเองไปบอกให้กับบริษัทคู่แข่งเพื่อแลกกับผลประโยชน์ส่วนตัว'</i><br>พฤติกรรมของวิชัยตรงกับสำนวนภาษาไทยในข้อใดมากที่สุด",
+    choices: [
+      "หนอนบ่อนไส้",
+      "กาคาบพริก",
+      "มือไม่พายเอาเท้าราน้ำ",
+      "จับปลาสองมือ"
+    ],
+    a: 0,
+    exp: "'หนอนบ่อนไส้' หมายถึง คนที่อยู่ฝ่ายเดียวกันแต่คิดทรยศเอาความลับไปบอกฝ่ายตรงข้าม ช้อยส์อื่นมีความหมายต่างออกไป (เช่น มือไม่พายฯ คือไม่ช่วยแล้วยังขัดขวาง)"
+  },
+  {
+    cat: "สำนวน สุภาษิต และคำพังเพย",
+    q: "สถานการณ์ใดอธิบายความหมายของสุภาษิต <strong>'น้ำขึ้นให้รีบตัก'</strong> ได้ถูกต้องและชัดเจนที่สุดในแง่การประยุกต์ใช้ชีวิตประจำวัน",
+    choices: [
+      "เมื่อมีฝนตกหนักให้ชาวบ้านนำโอ่งมารองรับน้ำไว้ใช้ในหน้าแล้ง",
+      "เมื่อมีโอกาสดีๆ หรือช่องทางทำมาหากินผ่านเข้ามาควรรีบไขว่คว้าและลงมือทำ",
+      "เมื่อน้ำประปาไหลแรงให้รีบเปิดซักผ้าและล้างรถทันที",
+      "เมื่อเห็นผู้อื่นตักน้ำไปขายให้รีบไปทำตามเพื่อแบ่งผลกำไร"
+    ],
+    a: 1,
+    exp: "สุภาษิตนี้สอนในเชิงเปรียบเปรยถึงเรื่อง 'โอกาส' เมื่อมีโอกาสดีๆ เข้ามาในชีวิตให้รีบลงมือทำ อย่าปล่อยให้โอกาสนั้นหลุดลอยไป"
+  },
+  {
+    cat: "สำนวน สุภาษิต และคำพังเพย",
+    q: "<i>'สมศรีเตือนสมชายหลายครั้งเรื่องการเล่นพนันออนไลน์ว่ามีแต่จะทำให้หมดตัว แต่สมชายก็ไม่เคยฟังและยังคงเล่นต่อไปเหมือนเดิม'</i><br>ตรงกับคำพังเพยในข้อใด",
+    choices: [
+      "ตักน้ำรดหัวตอ",
+      "สีซอให้ควายฟัง",
+      "เอามะพร้าวห้าวไปขายสวน",
+      "ชี้โพรงให้กระรอก"
+    ],
+    a: 1,
+    exp: "'สีซอให้ควายฟัง' หรือ 'ตักน้ำรดหัวตอ' มักใช้เปรียบเปรยกับการแนะนำสั่งสอนคนที่มีความดื้อรั้น แนะนำเท่าไหร่ก็ไม่ได้ผล ไม่ยอมรับฟัง ซึ่งสีซอให้ควายฟังเป็นสำนวนที่นิยมใช้ในบริบทของการพูดเตือนแล้วไม่เข้าหูที่สุด"
+  },
+  {
+    cat: "สำนวน สุภาษิต และคำพังเพย",
+    q: "คนที่มีพฤติกรรม <strong>'ต่อหน้าพูดจาไพเราะเยินยอ แต่ลับหลังกลับนำไปนินทาว่าร้าย'</strong> ตรงกับสำนวนในข้อใด",
+    choices: [
+      "ปากหวานก้นเปรี้ยว",
+      "หน้าเนื้อใจเสือ",
+      "ปากว่าตาขยิบ",
+      "ปากปราศรัยน้ำใจเชือดเฉือน"
+    ],
+    a: 3,
+    exp: "'ปากปราศรัยน้ำใจเชือดเฉือน' หมายถึง คำพูดดูดีอ่อนหวานแต่ในใจคิดร้าย ทำร้ายลับหลัง ส่วนปากหวานก้นเปรี้ยวหมายถึงพูดดีแต่ไม่จริงใจ หน้าเนื้อใจเสือหมายถึงหน้าตาใจดีแต่ใจร้าย"
+  },
+  {
+    cat: "สำนวน สุภาษิต และคำพังเพย",
+    q: "สำนวนในข้อใดสอนให้เราเป็นคนรู้จัก <strong>'ประหยัดอดออมและเตรียมพร้อมสำหรับอนาคต'</strong>",
+    choices: [
+      "เก็บเบี้ยใต้ถุนร้าน",
+      "มีสลึงพึงบรรจบให้ครบบาท",
+      "ขี่ช้างจับตั๊กแตน",
+      "นกน้อยทำรังแต่พอตัว"
+    ],
+    a: 1,
+    exp: "'มีสลึงพึงบรรจบให้ครบบาท' สอนให้รู้จักเก็บออมเงินทีละเล็กทีละน้อยจนกลายเป็นเงินก้อนใหญ่ ส่วนนกน้อยทำรังแต่พอตัวเน้นสอนให้ทำสิ่งต่างๆ ให้พอดีกับฐานะตนเอง"
+  },
+  {
+    cat: "การเขียนและการสื่อสารในชีวิตประจำวัน",
+    q: "หากนักศึกษาต้องการเขียน <strong>'จดหมายลาป่วย'</strong> ส่งถึงอาจารย์ผู้สอน ข้อความในข้อใดเลือกใช้ภาษาได้ถูกต้องสละสลวยตามรูปแบบจดหมายกิจธุระที่สุด",
+    choices: [
+      "เนื่องจากกระผมเป็นไข้หวัดใหญ่ ปวดหัวมาก เดินไม่ไหว จึงขอหยุดเรียนจนกว่าจะหาย",
+      "เนื่องด้วยดิฉันมีอาการป่วยเป็นไข้หวัด ตัวร้อนจัด จึงเรียนมาเพื่อขออนุญาตลาหยุดเรียนเป็นเวลา ๒ วัน",
+      "ฉันป่วยหนักมากจนมาเรียนไม่ได้ ขอลาหยุดสักสองสามวันนะครู เดี๋ยวหายแล้วจะไปบอก",
+      "กระผมไม่สบายกะทันหัน หมอสั่งให้พักผ่อนยาว เลยเขียนมาบอกครูว่าขอลารวมๆ ไปเลยครับ"
+    ],
+    a: 1,
+    exp: "ช้อยส์ 2 มีความสุภาพ มีเหตุผลชัดเจน ระบุจำนวนวันลา และลงท้ายได้ถูกต้องตามมาตรฐานการเขียนจดหมายลาครู/อาจารย์"
+  },
+  {
+    cat: "การเขียนและการสื่อสารในชีวิตประจำวัน",
+    q: "ในการกรอกข้อมูลสมัครงานหรือสมัครเรียน <strong>'ช่องประวัติส่วนตัว'</strong> ข้อใดคือข้อมูลที่นักศึกษา <strong>ไม่ควร</strong> กรอกลงไปเพราะไม่มีผลต่อการพิจารณาและอาจเป็นช่องโหว่ด้านข้อมูลส่วนบุคคล",
+    choices: [
+      "ชื่อ-นามสกุล และวันเดือนปีเกิด",
+      "วุฒิการศึกษาสูงสุดที่ได้รับ",
+      "รหัสผ่านเข้าใช้งานบัญชีธนาคารหรือสื่อสังคมออนไลน์ส่วนตัว",
+      "เบอร์โทรศัพท์มือถือที่สามารถติดต่อได้สะดวก"
+    ],
+    a: 2,
+    exp: "รหัสผ่าน (Password) ถือเป็นความลับสูงสุดด้านความปลอดภัย ห้ามกรอกลงในใบสมัครใดๆ ทั้งสิ้น ช้อยส์อื่นล้วนเป็นข้อมูลจำเป็นตามโครงสร้างใบสมัครงาน"
+  },
+  {
+    cat: "การเขียนและการสื่อสารในชีวิตประจำวัน",
+    q: "ข้อใดคือการใช้ภาษาในการ <strong>'พูดปฏิเสธ'</strong> เมื่อเพื่อนชวนไปงานเลี้ยงแต่เราต้องดูแลผู้ป่วยที่บ้าน ได้อย่างรักษาน้ำใจและสุภาพที่สุด",
+    choices: [
+      "ไม่ไปหรอก งานเลี้ยงน่าเบื่อ ฉันต้องอยู่เฝ้าแม่ที่ป่วยอีก",
+      "ขอบใจมากนะที่ชวน แต่พอดีวันนั้นฉันติดธุระต้องดูแลคุณแม่ที่ไม่สบายไว้โอกาสหน้านะ",
+      "เธอไปกันเองเถอะ อย่ามายุ่งกับฉันเลย ช่วงนี้แม่ฉันป่วยไม่มีอารมณ์ไปไหน",
+      "ทำไมต้องมาชวนตอนที่แม่ฉันป่วยด้วยล่ะ รู้ทั้งรู้ว่าฉันไปไม่ได้"
+    ],
+    a: 1,
+    exp: "การปฏิเสธที่ดีตามหลักศิลปะการสื่อสารภาษาไทย ต้องเริ่มด้วยคำขอบคุณ แสดงเหตุผลจำเป็นอย่างสุภาพ และเปิดโอกาสในอนาคตเพื่อรักษาสัมพันธภาพ"
+  },
+  {
+    cat: "การเขียนและการสื่อสารในชีวิตประจำวัน",
+    q: "คำขึ้นต้นและคำลงท้ายในการเขียนจดหมายถึง <strong>'ประธานกรรมการมูลนิธิหรือบุคคลทั่วไปที่เป็นผู้ใหญ่'</strong> ข้อใดจับคู่ได้ถูกต้องตามหลักสากล",
+    choices: [
+      "คำขึ้นต้น: เรียน / คำลงท้าย: ด้วยความเคารพอย่างสูง",
+      "คำขึ้นต้น: ถึง / คำลงท้าย: จากใจจริง",
+      "คำขึ้นต้น: กราบเท้า / คำลงท้าย: ด้วยความเคารพรักอย่างยิ่ง",
+      "คำขึ้นต้น: นมัสการ / คำลงท้าย: ขอแสดงความนับถือ"
+    ],
+    a: 0,
+    exp: "การเขียนจดหมายติดต่อผู้ใหญ่หรือบุคคลทั่วไปในเชิงกิจธุระ/ทางการ จะใช้คำขึ้นต้นว่า 'เรียน...' และคำลงท้ายว่า 'ด้วยความเคารพอย่างสูง' ส่วนกราบเท้าใช้กับญาติผู้ใหญ่ และนมัสการใช้กับพระสงฆ์"
+  },
+  {
+    cat: "การเขียนและการสื่อสารในชีวิตประจำวัน",
+    q: "เมื่อนักศึกษาเห็นป้ายโฆษณาอาหารเสริมระบุข้อความว่า: <strong>'กินเม็ดเดียว หายขาดจากโรคเบาหวาน ความดัน ไตวาย ภายใน ๓ วัน หน้าเด็กลงสิบปี!'</strong> ข้อใดคือแนวทางการคิดวิเคราะห์ตามหลักภาษาและการสื่อสารที่ถูกต้องที่สุด",
+    choices: [
+      "รีบสั่งซื้อทันทีเพราะมีการใช้คำที่น่าดึงดูดใจและรับประกันผลชัดเจน",
+      "เป็นโฆษณาเกินจริงที่ใช้คำอวดอ้างสรรพคุณเกินจริงและไม่เป็นไปตามหลักความจริง",
+      "เชื่อถือได้เพราะภาษาที่ใช้เขียนสะกดได้ถูกต้องตามพจนานุกรมทุกคำ",
+      "ส่งต่อข้อมูลนี้ให้เพื่อนในไลน์กลุ่มทันทีเพื่อช่วยกระจายสิ่งดีๆ"
+    ],
+    a: 1,
+    exp: "ข้อความโฆษณาชิ้นนี้ใช้ภาษาอวดอ้างเกินจริง (Exaggeration) โรคร้ายแรงไม่สามารถรักษาหายขาดได้ใน 3 วันตามหลักการแพทย์ ผู้บริโภคที่ดีต้องวิเคราะห์ความสมเหตุสมผลก่อนเชื่อถือ"
+  }
+];
+
+let state = {
+  screen: 'login', studentName: '', studentId: '', questions: [], answers: [], checked: [], current: 0
+};
+
+function shuffleArray(arr) {
+  let newArr = arr.slice();
+  for (let i = newArr.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+}
+
+function startApp() {
+  const nameInput = document.getElementById('s_name').value;
+  const idInput = document.getElementById('s_id').value;
+  if (!nameInput.trim()) { alert('กรุณากรอกชื่อ-นามสกุลก่อนเข้าสอบครับ'); return; }
+  
+  state.studentName = nameInput;
+  state.studentId = idInput || 'สกร. ระดับประถมศึกษา';
+  document.getElementById('subtitle-text').innerText = 'ผู้เข้าสอบ: ' + state.studentName;
+  
+  let shuffledDB = shuffleArray(database);
+  state.questions = [];
+  
+  for (let i = 0; i < shuffledDB.length; i++) {
+    let q = shuffledDB[i];
+    let correctText = q.choices[q.a];
+    let newChoices = shuffleArray(q.choices);
+    let newCorrectIndex = newChoices.indexOf(correctText);
+    
+    state.questions.push({
+      cat: q.cat, q: q.q, exp: q.exp, choices: newChoices, correctAnswer: newCorrectIndex
+    });
+  }
+  
+  state.answers = new Array(state.questions.length).fill(null);
+  state.checked = new Array(state.questions.length).fill(false);
+  state.current = 0;
+  state.screen = 'quiz';
+  renderApp();
+}
+
+function renderApp() {
+  const app = document.getElementById('app');
+  if (state.screen === 'login') {
+    app.innerHTML = `
+      <div class="card" style="text-align: center; padding: 40px 20px;">
+        <div style="font-size: 60px; margin-bottom: 10px;">🇹🇭</div>
+        <h2 style="color: var(--primary-dark); margin-bottom: 10px;">ระบบประเมินสมรรถนะ N-NET ภาษาไทย ประถมศึกษา (ชุดที่ 3)</h2>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">เน้นการคิดวิเคราะห์ประยุกต์ใช้ คัดกรองตัวลวงวิชาการ และการแก้ไขปัญหาในชีวิตประจำวัน 20 ข้อ</p>
+        <div class="inp-group">
+          <label class="inp-label">ชื่อ-นามสกุลผู้เข้าสอบ</label>
+          <input type="text" id="s_name" class="inp-text" placeholder="พิมพ์ชื่อและนามสกุลของคุณที่นี่">
+        </div>
+        <div class="inp-group">
+          <label class="inp-label">ระดับชั้น / สังกัด สกร.</label>
+          <input type="text" id="s_id" class="inp-text" value="ระดับประถมศึกษา - แบบทดสอบชุดที่ 3">
+        </div>
+        <button class="btn btn-primary" style="margin-top: 10px;" onclick="startApp()">เริ่มทำแบบทดสอบภาษาไทย 🚀</button>
+      </div>
+    `;
+  } 
+  else if (state.screen === 'quiz') {
+    let total = state.questions.length;
+    let curr = state.current;
+    let q = state.questions[curr];
+    let ans = state.answers[curr];
+    let isChecked = state.checked[curr];
+    let pct = Math.round(((curr + 1) / total) * 100);
+    
+    let letters = ['๑', '๒', '๓', '๔'];
+    let choicesHTML = '';
+    
+    for (let i = 0; i < 4; i++) {
+      let cssClass = 'choice';
+      if (isChecked) {
+        if (i === q.correctAnswer) cssClass += ' correct';
+        else if (i === ans && ans !== q.correctAnswer) cssClass += ' wrong';
+      } else {
+        if (i === ans) cssClass += ' selected';
+      }
+      choicesHTML += `<button class="${cssClass}" ${isChecked ? 'disabled' : ''} onclick="selectAnswer(${i})">
+                        <div class="c-let">${letters[i]}</div>
+                        <div>${q.choices[i]}</div>
+                      </button>`;
+    }
+    
+    let fbHTML = isChecked ? (
+      ans === q.correctAnswer 
+        ? `<div class="feedback ok">✅ <strong>ยอดเยี่ยม! คำตอบถูกต้อง</strong><div class="fb-explain">💡 <strong>บทวิเคราะห์แนวคิด:</strong> ${q.exp}</div></div>`
+        : `<div class="feedback no">❌ <strong>คำตอบยังไม่ถูกต้องครับ</strong> — พิจารณาข้อเฉลยที่เป็นแถบสีเขียวประกอบ<div class="fb-explain">💡 <strong>หลักเกณฑ์วิชาการ:</strong> ${q.exp}</div></div>`
+    ) : '';
+    
+    let btnPrev = curr > 0 ? `<button class="btn btn-secondary" onclick="goPrev()">← ข้อก่อนหน้า</button>` : `<div style="width:48%"></div>`;
+    let btnNext = isChecked ? (
+      curr === total - 1 ? `<button class="btn btn-primary" onclick="showResult()">ส่งกระดาษคำตอบและวิเคราะห์ผล 🏆</button>` : `<button class="btn btn-primary" onclick="goNext()">ข้อถัดไป →</button>`
+    ) : `<button class="btn btn-primary" ${ans === null ? 'disabled' : ''} onclick="checkAnswer()">ส่งตรวจคำตอบ ✓</button>`;
+    
+    let dotsHTML = '<div class="dot-nav">';
+    for (let i = 0; i < total; i++) {
+      let dClass = 'dot';
+      if (i === curr) dClass += ' active';
+      else if (state.checked[i]) dClass += (state.answers[i] === state.questions[i].correctAnswer) ? ' ok' : ' no';
+      dotsHTML += `<button class="${dClass}" onclick="jumpTo(${i})">${i+1}</button>`;
+    }
+    dotsHTML += '</div>';
+
+    app.innerHTML = `
+      <div class="card" style="padding: 16px 20px;">
+        <div class="prog-text"><span>ข้อที่ ${curr + 1} จาก ${total}</span><span>ความคืบหน้า ${pct}%</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width: ${pct}%"></div></div>
+      </div>
+      <div class="card">
+        <div class="q-badge">หมวดทักษะ: ${q.cat}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="choices">${choicesHTML}</div>
+        ${fbHTML}
+        <div class="nav-buttons">${btnPrev}${btnNext}</div>
+      </div>
+      ${dotsHTML}
+    `;
+  }
+  else if (state.screen === 'result') {
+    let total = state.questions.length;
+    let score = 0;
+    let catStats = {};
+    
+    for (let i = 0; i < total; i++) {
+      let q = state.questions[i];
+      if (!catStats[q.cat]) catStats[q.cat] = { total: 0, correct: 0 };
+      catStats[q.cat].total++;
+      if (state.answers[i] === q.correctAnswer) { score++; catStats[q.cat].correct++; }
+    }
+    
+    let pct = Math.round((score / total) * 100);
+    
+    let analysisHTML = '';
+    for (let cat in catStats) {
+      let cPct = Math.round((catStats[cat].correct / catStats[cat].total) * 100);
+      let isWeak = cPct < 60;
+      let tagClass = isWeak ? 'weak' : 'good';
+      let tagText = isWeak ? '⚠️ ควรเร่งพัฒนาจุดสับสนเพิ่ม' : '✅ บรรลุเกณฑ์สมรรถนะการคิดวิเคราะห์';
+      
+      let advice = '';
+      if(cat === "การอ่านจับใจความและวิเคราะห์ข้อเท็จจริง") advice = isWeak ? 'ยังมีจุดสับสนระหว่างข้อเท็จจริงกับข้อคิดเห็น รวมถึงเงื่อนไขของประกาศโฆษณา แนะนำให้อ่านอย่างรอบคอบและตัดช้อยส์ที่คิดไปเองออก' : 'ยอดเยี่ยมมาก! สามารถแยกแยะความจริง ความเห็น และตีความคู่มือหรือป้ายเตือนในชุมชนได้อย่างมีวิจารณญาณ';
+      else if(cat === "หลักการใช้ภาษาไทยและการสะกดคำ") advice = isWeak ? 'มักพลาดตรงจุดคำศัพท์ที่เขียนผิดบ่อย ลักษณนาม และระดับของคำสรรพนาม แนะนำให้ทบทวนมาตราตัวสะกดและการจับคู่ลักษณนามทั่วไป' : 'ดีเยี่ยม! มีโครงสร้างและความแม่นยำด้านหลักภาษาไทยดี เลือกใช้คำสรรพนามได้ถูกต้องตามกาลเทศะบุคคล';
+      else if(cat === "สำนวน สุภาษิต และคำพังเพย") advice = isWeak ? 'สับสนระหว่างความหมายเชิงลึกของสำนวนไทย แนะนำให้เชื่อมโยงพฤติกรรมในชีวิตประจำวันเข้ากับคำสอนของสุภาษิตให้มากขึ้น' : 'เก่งมาก! เข้าใจบริบทและคุณค่าของถ้อยคำสำนวนไทย สามารถนำไปเปรียบเปรยและประยุกต์ใช้สอนตนเองและผู้อื่นได้อย่างดี';
+      else if(cat === "การเขียนและการสื่อสารในชีวิตประจำวัน") advice = isWeak ? 'ยังมีข้อบกพร่องในเรื่องภาษาจดหมายทางการ ความปลอดภัยของข้อมูลส่วนตัว และศิลปะการปฏิเสธอย่างสุภาพรักษาน้ำใจ' : 'โดดเด่นมาก! มีทักษะการสื่อสารทางสังคมที่ดี รู้จักปกป้องข้อมูลส่วนตัวจากการหลอกลวง และใช้ระดับภาษากิจธุระได้ถูกต้อง';
+
+      analysisHTML += `
+        <div class="analysis-item ${isWeak ? 'weak' : 'good'}">
+          <span class="analysis-tag ${tagClass}">${tagText}</span>
+          <div style="font-weight: 700; font-size: 15px; margin-bottom: 2px;">ด้าน: ${cat}</div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">ทำได้สุทธิ ${catStats[cat].correct} จาก ${catStats[cat].total} ข้อ (${cPct}%)</div>
+          <div style="font-size: 13px; line-height:1.4;">💡 <strong>ข้อแนะนำพัฒนาผู้เรียน:</strong> ${advice}</div>
+        </div>
+      `;
+    }
+
+    let reviewHTML = '<div class="card" style="margin-top:20px"><div style="font-weight:700; margin-bottom:12px;">📋 สรุปรายการวิเคราะห์คำตอบแบบรายข้ออย่างละเอียด</div>';
+    for (let i = 0; i < total; i++) {
+      let q = state.questions[i];
+      let isCorr = (state.answers[i] === q.correctAnswer);
+      reviewHTML += `
+        <div class="review-item">
+          <div class="r-q"><span class="ri-tick ${isCorr?'ok':'no'}">${isCorr?'✓':'✗'}</span> ข้อที่ ${i+1}: ${q.q}</div>
+          <div class="r-a" style="color:var(--text-muted)">คำตอบของคุณ: ${state.answers[i] !== null ? q.choices[state.answers[i]] : 'ไม่ได้เลือกคำตอบ'}</div>
+          <div class="r-a" style="color:var(--green); font-weight:600;">คำตอบที่ถูกต้องตามหลักภาษา: ${q.choices[q.correctAnswer]}</div>
+        </div>
+      `;
+    }
+    reviewHTML += '</div>';
+
+    app.innerHTML = `
+      <div class="card" style="text-align:center; padding:32px 20px;">
+        <h3 style="color:var(--primary-dark); margin-bottom:6px;">รายงานผลสอบประเมินสมรรถนะปลายภาค N-NET ภาษาไทย</h3>
+        <div style="font-size:18px; font-weight:700;">คุณ ${state.studentName}</div>
+        <div style="font-size:13px; color:var(--text-muted); margin-bottom:24px;">สังกัดการประเมิน: ${state.studentId}</div>
+        
+        <div style="font-size:56px; font-weight:800; color:var(--primary-dark); line-height:1;">${score}</div>
+        <div style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">คะแนนที่ทำได้ (จากข้อสอบทั้งหมด ${total} ข้อ)</div>
+        
+        <div class="grid-stats">
+          <div class="stat-box"><div class="stat-num green">${score}</div><div style="font-size:12px;color:var(--text-muted)">ตอบถูก (ข้อ)</div></div>
+          <div class="stat-box"><div class="stat-num red">${total - score}</div><div style="font-size:12px;color:var(--text-muted)">ตอบผิด (ข้อ)</div></div>
+          <div class="stat-box"><div class="stat-num blue">${pct}%</div><div style="font-size:12px;color:var(--text-muted)">ความแม่นยำรวม</div></div>
+        </div>
+      </div>
+
+      <div class="analysis-card">
+        <div class="analysis-header">📊 ผลสรุปสมรรถนะการเรียนรู้รายทักษะ</div>
+        ${analysisHTML}
+      </div>
+      
+      <button class="btn btn-primary" onclick="location.reload()">🔄 รีเฟรชเพื่อสุ่มชุดคำถามและสลับช้อยส์ทำใหม่อีกครั้ง</button>
+      ${reviewHTML}
+    `;
+  }
+}
+
+function selectAnswer(index) { if (state.checked[state.current]) return; state.answers[state.current] = index; renderApp(); }
+function checkAnswer() { if (state.answers[state.current] === null) return; state.checked[state.current] = true; renderApp(); }
+function goNext() { if (state.current < state.questions.length - 1) { state.current++; renderApp(); } }
+function goPrev() { if (state.current > 0) { state.current--; renderApp(); } }
+function jumpTo(index) { state.current = index; renderApp(); }
+function showResult() { state.screen = 'result'; renderApp(); }
+
+renderApp();
+</script>
+</body>
+</html>
