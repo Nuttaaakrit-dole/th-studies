@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบทดสอบ N-NET วิชาภาษาไทย ระดับประถมศึกษา (ชุดที่ 5)</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #4f46e5; /* สีน้ำเงินอินดิโก้ สื่อถึงสติปัญญา อักษรศาสตร์ และความรอบรู้ */
+    --primary-dark: #3730a3;
+    --primary-light: #e0e7ff;
+    --green: #16a34a; --green-light: #f0fdf4; --green-mid: #bbf7d0;
+    --red: #dc2626; --red-light: #fef2f2; --red-mid: #fecaca;
+    --amber-light: #fffbeb; --amber: #d97706;
+    --gray-bg: #f8fafc; --gray-card: #ffffff; --gray-border: #e2e8f0;
+    --text: #0f172a; --text-muted: #475569;
+  }
+  body { font-family: 'Sarabun', sans-serif; background: var(--gray-bg); color: var(--text); padding: 16px 8px; line-height: 1.6; }
+  .container { max-width: 650px; margin: 0 auto; padding-bottom: 60px; }
+  
+  .header-card { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 26px; border-radius: 16px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15); text-align: center; }
+  .header-card h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .header-card p { font-size: 14px; opacity: 0.9; }
+
+  .card { background: var(--gray-card); border: 1px solid var(--gray-border); border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.01), 0 2px 4px -1px rgba(0,0,0,0.01); }
+  
+  .emoji-banner { font-size: 52px; text-align: center; margin-bottom: 16px; margin-top: 8px; animation: pulse 2.5s infinite; }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .form-group { margin-bottom: 16px; text-align: left; }
+  .form-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+  .form-control { width: 100%; padding: 12px 14px; border: 1px solid var(--gray-border); border-radius: 10px; font-family: 'Sarabun', sans-serif; font-size: 15px; transition: all 0.2s; }
+  .form-control:focus { outline: none; border-color: var(--primary); background-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
+  
+  .progress-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; font-size: 14px; color: var(--text-muted); font-weight: 500; }
+  .progress-bar-bg { background: #e2e8f0; height: 8px; border-radius: 4px; flex-grow: 1; margin: 0 12px; position: relative; overflow: hidden; }
+  .progress-bar-fill { background: var(--primary); height: 100%; width: 0%; transition: width 0.3s ease; }
+
+  .question-text { font-size: 16px; font-weight: 600; margin-bottom: 20px; color: var(--text); white-space: pre-line; background: #fdfdfd; padding: 12px; border-radius: 8px; border-left: 4px solid var(--primary); }
+  .hint-box { background: var(--amber-light); border-left: 4px solid var(--amber); padding: 12px 16px; border-radius: 4px 8px 8px 4px; margin-bottom: 20px; font-size: 14px; color: var(--amber); }
+
+  .options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .option-item { display: flex; align-items: flex-start; padding: 14px 16px; border: 1px solid var(--gray-border); border-radius: 12px; cursor: pointer; transition: all 0.2s ease; background: white; font-size: 15px; }
+  .option-item:hover { border-color: #94a3b8; background: #f8fafc; }
+  .option-item.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); font-weight: 500; }
+  
+  .option-item.correct-reveal { border-color: var(--green-mid); background: var(--green-light); color: var(--green); font-weight: 500; }
+  .option-item.wrong-reveal { border-color: var(--red-mid); background: var(--red-light); color: var(--red); }
+  .option-item.disabled { cursor: not-allowed; pointer-events: none; }
+
+  .radio-dot { height: 18px; min-width: 18px; border: 2px solid #cbd5e1; border-radius: 50%; margin-right: 12px; margin-top: 2px; position: relative; display: inline-block; }
+  .option-item.selected .radio-dot { border-color: var(--primary); }
+  .option-item.selected .radio-dot::after { content: ''; position: absolute; width: 10px; height: 10px; background: var(--primary); border-radius: 50%; top: 2px; left: 2px; }
+  .option-item.correct-reveal .radio-dot { border-color: var(--green); }
+  .option-item.correct-reveal .radio-dot::after { content: '✓'; color: var(--green); font-size: 12px; font-weight: bold; position: absolute; top: -4px; left: 2px; }
+  .option-item.wrong-reveal .radio-dot { border-color: var(--red); }
+  .option-item.wrong-reveal .radio-dot::after { content: '✕'; color: var(--red); font-size: 12px; font-weight: bold; position: absolute; top: -4px; left: 2px; }
+
+  .rationale-box { padding: 14px 16px; border-radius: 10px; font-size: 14px; margin-bottom: 20px; animation: fadeIn 0.3s ease; }
+  .rationale-box.correct { background: var(--green-light); border: 1px dashed var(--green-mid); color: var(--green); }
+  .rationale-box.wrong { background: var(--red-light); border: 1px dashed var(--red-mid); color: var(--red); }
+
+  .nav-actions { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; }
+  .btn { flex: 1; padding: 12px 16px; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.2s; text-decoration: none; }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-primary:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; }
+  .btn-secondary { background: #e2e8f0; color: var(--text); }
+  .btn-secondary:hover { background: #cbd5e1; }
+  .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .summary-card { text-align: center; padding: 32px 24px; border: 2px solid var(--primary) !important; }
+  .student-info-box { background: #f5f3ff; border: 1px dashed var(--primary); padding: 16px; border-radius: 12px; margin: 16px 0; text-align: left; }
+  .student-info-box p { font-size: 14px; margin-bottom: 4px; color: var(--text); }
+  .student-info-box p b { color: var(--primary-dark); }
+  
+  .grade-pill { display: inline-block; padding: 6px 18px; border-radius: 20px; font-weight: 700; font-size: 16px; margin: 8px 0; }
+  .grade-pass { background: var(--green-light); color: var(--green); border: 1px solid var(--green-mid); }
+  .grade-fail { background: var(--red-light); color: var(--red); border: 1px solid var(--red-mid); }
+  
+  .grid-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+  .stat-box { background: #f8fafc; border: 1px solid var(--gray-border); padding: 12px; border-radius: 10px; text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 700; }
+  .slbl { font-size: 12px; color: var(--text-muted); }
+
+  .review-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; text-align: left; border-bottom: 2px solid var(--primary); padding-bottom: 6px; color: var(--primary); }
+  .review-item { text-align: left; padding: 16px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+  .review-item:last-child { border-bottom: none; }
+  
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header-card">
+    <h1>สกร.โนนสัง ระดับประถมศึกษา — แบบทดสอบ N-NET</h1>
+    <p>วิชาภาษาไทย (ชุดที่ 5: การประยุกต์ใช้ภาษาและการวิเคราะห์ตัวลวงขั้นสูง)</p>
+  </div>
+
+  <div id="quiz-app"></div>
+</div>
+
+<script>
+const quizData = {
+  "questions": [
+    {
+      "question": "หากคุณต้องการเขียนโฆษณาในสื่อออนไลน์เพื่อเชิญชวนให้คนในชุมชนหันมาซื้อ \"น้ำพริกตาแดงสูตรลดโซเดียม\" ของกลุ่มแม่บ้าน สกร. ข้อความในข้อใดใช้ภาษาได้น่าเชื่อถือ มีเหตุผล และไม่โอ้อวดเกินจริง?",
+      "answerOptions": [
+        { "text": "น้ำพริกตาแดง สกร. แซ่บทะลุโลก รักษาโรคไตหายขาดใน 3 วัน แน่นอน!", "rationale": "ตัวลวงโอ้อวดเกินจริง การอ้างว่ารักษาโรคไตหายขาดเป็นการโฆษณาเท็จที่ผิดกฎหมายและขาดความน่าเชื่อถือ", "isCorrect": false },
+        { "text": "อร่อยจัดจ้านแต่ผ่านกระบวนการลดโซเดียมลง 30% ดีต่อสุขภาพ ทางเลือกใหม่ของคนรักน้ำพริก", "rationale": "ถูกต้อง! มีการระบุข้อมูลที่ชัดเจนและเป็นเหตุเป็นผล (ลดโซเดียม 30%) ใช้ภาษาโน้มน้าวใจอย่างสร้างสรรค์และอยู่บนพื้นฐานความจริง", "isCorrect": true },
+        { "text": "ถ้าไม่อยากอายุสั้นเพราะกินเค็ม ต้องรีบซื้อน้ำพริกกลุ่มแม่บ้านเราไปกินด่วนๆ", "rationale": "ตัวลวงข่มขู่ การใช้ภาษาในเชิงข่มขู่หรือทำให้ผู้บริโภคกลัว (ไม่อยากอายุสั้น) ไม่ใช่ลักษณะของภาษาโฆษณาที่ดีและสร้างสรรค์", "isCorrect": false },
+        { "text": "น้ำพริกตาแดงสูตรพิเศษ ไม่มีใครในประเทศทำอร่อยเท่านี้อีกแล้ว ลองเลยอย่าคิดมาก", "rationale": "ตัวลวงยกตนข่มท่าน การใช้คำว่าไม่มีใครในประเทศทำอร่อยเท่าเป็นการอ้างลอยๆ ไม่มีหลักฐานรองรับและดูเกินจริง", "isCorrect": false }
+      ],
+      "hint": "ภาษาโฆษณาที่ดีต้องบอกประโยชน์หรือจุดเด่นของสินค้าตามความจริง มีหลักการรองรับ และไม่ใช้คำพูดที่เกินจริงหรือข่มขู่"
+    },
+    {
+      "question": "พิจารณาข้อความต่อไปนี้:\n\"(1) ผักกาดขาวมีกากใยอาหารสูงช่วยในการขับถ่าย (2) แม่ค้าบอกว่าผักกาดขาวปีนี้ราคาถูกที่สุดในรอบห้าปี (3) เมนูต้มจืดเต้าหู้หมูสับใส่ผักกาดขาวเป็นอาหารที่อร่อยที่สุด (4) การทานผักเป็นประจำช่วยให้ร่างกายได้รับวิตามิน\"\n\nข้อความหมายเลขใดจัดเป็น \"ข้อคิดเห็น\" ทั้งหมด?",
+      "answerOptions": [
+        { "text": "หมายเลข (1) และ (2)", "rationale": "ตัวลวงข้อเท็จจริงปนข้อความบอกเล่า หมายเลข 1 เป็นข้อเท็จจริงทางวิทยาศาสตร์ ส่วนหมายเลข 2 เป็นคำบอกเล่าของบุคคล", "isCorrect": false },
+        { "text": "หมายเลข (2) และ (4)", "rationale": "ตัวลวงสับสน หมายเลข 4 เป็นข้อเท็จจริงด้านโภชนาการที่พิสูจน์ได้", "isCorrect": false },
+        { "text": "หมายเลข (2) และ (3)", "rationale": "ถูกต้อง! หมายเลข 2 เป็นเพียงคำบอกเล่าลอยๆ ของบุคคล (แม่ค้าบอกว่า) และหมายเลข 3 มีคำว่า 'อร่อยที่สุด' ซึ่งเป็นความรู้สึกส่วนบุคคล (ความนิยมชมชอบ) ทั้งสองข้อจึงเป็นข้อคิดเห็น", "isCorrect": true },
+        { "text": "หมายเลข (1) และ (4)", "rationale": "ตัวลวงข้อเท็จจริงล้วน ทั้งสองข้อเป็นข้อเท็จจริงเชิงวิชาการที่สามารถพิสูจน์และตรวจสอบได้ตามหลักวิทยาศาสตร์", "isCorrect": false }
+      ],
+      "hint": "ข้อคิดเห็น มักจะมีคำแสดงความรู้สึก คาดคะเน หรือเป็นคำพูดของบุคคลที่ไม่มีหลักฐานยืนยันแน่ชัด เช่น อร่อยที่สุด, น่าจะ, คิดว่า"
+    },
+    {
+      "question": "ในการประชุมหมู่บ้าน ชาวบ้านกำลังโต้เถียงกันเรื่องการจัดการขยะ หากนักศึกษาต้องการพูดเสนอความคิดเห็นเพื่อ \"หักล้าง\" แนวคิดเดิมอย่างสุภาพและเป็นไปในทางสร้างสรรค์ ควรเลือกใช้ประโยคใด?",
+      "answerOptions": [
+        { "text": "แนวคิดของคุณมันเก่าเกินไปแล้ว สมัยนี้ไม่มีใครเขาทำแบบนั้นกันหรอกครับ", "rationale": "ตัวลวงติติงบุคคล ประโยคนี้เป็นการโจมตีตัวบุคคลและใช้น้ำเสียงตำหนิ ทำให้เกิดความขัดแย้งมากกว่าการแก้ปัญหา", "isCorrect": false },
+        { "text": "ผมขอคัดค้านเต็มที่ เพราะขืนทำตามแผนเดิม หมู่บ้านเราต้องสกปรกกว่าเดิมแน่ๆ", "rationale": "ตัวลวงใช้อารมณ์ การใช้คำว่าคัดค้านเต็มที่ควบคู่กับการคาดคะเนในแง่ร้ายโดยไม่มีเหตุผลรองรับ ถือเป็นการพูดที่ใช้อารมณ์", "isCorrect": false },
+        { "text": "ผมเข้าใจเหตุผลของทุกท่านครับ แต่จากข้อมูลพบว่าการแยกขยะตั้งแต่ต้นทางจะช่วยลดงบประมาณได้มากกว่า วิธีนี้ก็น่าสนใจนะครับ", "rationale": "ถูกต้อง! เริ่มต้นด้วยการแสดงความเคารพความเห็นผู้อื่น (เข้าใจเหตุผล) แล้วนำเสนอทางเลือกใหม่โดยใช้อ้างอิงข้อมูลและลงท้ายด้วยความสุภาพ", "isCorrect": true },
+        { "text": "ถ้าพวกท่านไม่อยากให้หมู่บ้านเราโดนหลวงปรับเงิน ก็จงทำตามวิธีที่ผมบอกเถอะครับ", "rationale": "ตัวลวงบังคับขู่เข็ญ มีลักษณะของการออกคำสั่งและข่มขู่ ไม่เปิดโอกาสให้เกิดการระดมสมองร่วมกันในชุมชน", "isCorrect": false }
+      ],
+      "hint": "การพูดท้วงติงหรือหักล้างในที่ประชุม ต้องแสดงการยอมรับในความคิดเดิมก่อน จากนั้นจึงเสนอเหตุผลหรือข้อมูลใหม่เข้ามาเสริมอย่างสุภาพ"
+    },
+    {
+      "question": "สมปองได้รับมอบหมายให้เขียนจดหมายไปถึง \"นายอำเภอ\" เพื่อเชิญมาเป็นประธานในพิธีเปิดงานกีฬาชุมชน สมปองควรเลือกใช้คำขึ้นต้นและคำลงท้ายในข้อใดจึงจะถูกต้องตามระดับภาษาและราชประเพณี?",
+      "answerOptions": [
+        { "text": "คำขึ้นต้น: เรียน / คำลงท้าย: ขอแสดงความนับถืออย่างยิ่ง", "rationale": "ตัวลวงระดับสูง คำลงท้ายว่า 'อย่างยิ่ง' มักใช้กับบุคคลระดับสูงมาก เช่น นายกรัฐมนตรี แต่สำหรับนายอำเภอใช้ระดับมาตรฐานก็เพียงพอ", "isCorrect": false },
+        { "text": "คำขึ้นต้น: เรียน / คำลงท้าย: ขอแสดงความนับถือ", "rationale": "ถูกต้อง! นายอำเภอเป็นข้าราชการระดับสูง การติดต่ออย่างเป็นทางการใช้คำขึ้นต้นว่า 'เรียน' และคำลงท้ายว่า 'ขอแสดงความนับถือ' ตามระเบียบงานสารบรรณ", "isCorrect": true },
+        { "text": "คำขึ้นต้น: กราบเรียน / คำลงท้าย: ด้วยความเคารพรักอย่างสูง", "rationale": "ตัวลวงภาษาพูด 'กราบเรียน' ใช้กับบุคคลเฉพาะกลุ่ม เช่น ประธานองคมนตรี นายกรัฐมนตรี และคำว่า 'เคารพรัก' เป็นภาษาลำลองไม่เป็นทางการ", "isCorrect": false },
+        { "text": "คำขึ้นต้น: ถึง / คำลงท้าย: จากพวกเราชาวบ้าน สกร.", "rationale": "ตัวลวงไม่เป็นทางการ การใช้คำว่า 'ถึง' และคำลงท้ายแบบนี้เป็นภาษาพูดหรือจดหมายส่วนตัว ขาดความเคารพและไม่ถูกหลักหนังสือราชการ", "isCorrect": false }
+      ],
+      "hint": "บุคคลระดับบุคคลทั่วไป ข้าราชการ ตั้งแต่หัวหน้าส่วนราชการไปจนถึงผู้ว่าราชการจังหวัด ใช้คำขึ้นต้นและคำลงท้ายที่เป็นมาตรฐานเดียวกัน"
+    },
+    {
+      "question": "สำนวนไทยในข้อใด มีความหมายตรงกับพฤติกรรมของแม่ค้าที่ \"พูดจาหว่านล้อม โน้มน้าวใจเก่ง จนทำให้ลูกค้าหลงเชื่อและยอมซื้อสินค้าได้อย่างง่ายดาย\"?",
+      "answerOptions": [
+        { "text": "ปากปราศรัยใจเชือดคอ", "rationale": "ตัวลวงความหมายลบ ปากปราศรัยใจเชือดคอ หมายถึง พูดดีแต่ใจคิดร้าย หน้าเนื้อใจเสือ ไม่ตรงกับบริบทการขายของเก่ง", "isCorrect": false },
+        { "text": "น้ำร้อนปลาเป็น น้ำเย็นปลาตาย", "rationale": "ตัวลวงคำคม สัจธรรมสำนวนนี้หมายถึง คำพูดตรงๆ แต่อาจปลอดภัยกว่าคำพูดไพเราะแต่แฝงด้วยอันตราย", "isCorrect": false },
+        { "text": "ปากเปียกปากแฉะ", "rationale": "ตัวลวงพฤติกรรม ปากเปียกปากแฉะ หมายถึง พร่ำตักเตือนสั่งสอนซ้ำๆ ซากๆ แต่อีกฝ่ายก็ยังไม่ยอมทำตาม", "isCorrect": false },
+        { "text": "สาริกาลิ้นทอง", "rationale": "ถูกต้อง! สาริกาลิ้นทอง เป็นสำนวนที่เปรียบเปรยถึงคนที่มีวาทศิลป์ในการพูด พูดจาไพเราะ มีเสน่ห์ โน้มน้าวให้คนเชื่อถือและคล้อยตามได้เก่ง", "isCorrect": true }
+      ],
+      "hint": "สำนวนนี้มักถูกนำไปใช้ทำเป็นเครื่องรางของขลังเกี่ยวกับการเจรจาค้าขาย เมตตามหานิยม"
+    },
+    {
+      "question": "ข้อใดเป็นประโยคที่ใช้คำลักษณนามได้ถูกต้องตามอักขระวิธีภาษาไทย?",
+      "answerOptions": [
+        { "text": "ในวัดเก่าแก่แห่งนี้มีพระพุทธรูปศิลาทรายอยู่ทั้งหมด ๕ องค์", "rationale": "ถูกต้อง! ลักษณนามของพระพุทธรูป คือ 'องค์' (ส่วนพระภิกษุสามเณรใช้ 'รูป' และกษัตริย์/เทวดาใช้ 'องค์')", "isCorrect": true },
+        { "text": "ชาวบ้านช่วยกันนิมนต์พระภิกษุสงฆ์จำนวน ๓ องค์ มารับบิณฑบาต", "rationale": "ตัวลวงสับสน ลักษณนามของพระภิกษุสงฆ์ต้องใช้คำว่า 'รูป' ไม่ใช่ 'องค์' ซึ่งเป็นข้อผิดพลาดที่พบได้บ่อยมาก", "isCorrect": false },
+        { "text": "คุณยายซื้อเลื่อยลันดามาใหม่สองอันเพื่อเอาไว้ตัดแต่งกิ่งไม้", "rationale": "ตัวลวงเครื่องมือ ลักษณนามของ 'เลื่อย' ต้องใช้คำว่า 'ปื้น' ไม่ใช่ 'อัน'", "isCorrect": false },
+        { "text": "ที่บ้านของฉันมีรถยนต์สองคันและมีเกวียนเก่าโบราณอีกหนึ่งคัน", "rationale": "ตัวลวงยานพาหนะ ลักษณนามของรถยนต์คือ 'คัน' แต่ลักษณนามของเกวียนต้องใช้คำว่า 'เล่ม'", "isCorrect": false }
+      ],
+      "hint": "ระวังการสลับคำว่า 'รูป' กับ 'องค์' ในทางศาสนา และลักษณนามเฉพาะของเครื่องมือพื้นบ้านอย่างเลื่อยและเกวียน"
+    },
+    {
+      "question": "หากคุณอ่านประกาศรับสมัครงานตำแหน่ง \"พนักงานต้อนรับ\" แล้วพบข้อความต่อไปนี้ ข้อใดจัดว่าเป็น \"คุณสมบัติเฉพาะ\" ที่สามารถตีความและวัดผลได้ชัดเจนที่สุด?",
+      "answerOptions": [
+        { "text": "เป็นผู้มีความขยันหมั่นเพียรและซื่อสัตย์สุจริตต่อหน้าที่", "rationale": "ตัวลวงนามธรรม ความขยันและความซื่อสัตย์เป็นนามธรรมที่กว้างมาก ไม่สามารถวัดออกมาเป็นเกณฑ์ที่ชัดเจนได้ทันที", "isCorrect": false },
+        { "text": "มีมนุษยสัมพันธ์ดี หน้าตายิ้มแย้มแจ่มใสและรักงานบริการ", "rationale": "ตัวลวงอารมณ์ แม้จะเหมาะกับงานต้อนรับ แต่ความยิ้มแย้มแจ่มใสเป็นบุคลิกภาพทั่วไป มีความคลุมเครือในการวัดค่า", "isCorrect": false },
+        { "text": "ผ่านการทดสอบความรู้ภาษาอังกฤษระดับพื้นฐานหรือมีคะแนนเฉลี่ยไม่ต่ำกว่า ๒.๕๐", "rationale": "ถูกต้อง! เป็นข้อมูลเชิงปริมาณที่มีตัวเลข เกณฑ์ และหลักฐานยืนยันชัดเจน สามารถคัดเลือกและวัดผลผู้สมัครได้อย่างเป็นระบบ", "isCorrect": true },
+        { "text": "สามารถทนรับแรงกดดันจากลูกค้าอารมณ์ร้ายได้เป็นอย่างดี", "rationale": "ตัวลวงความรู้สึก การทนรับแรงกดดันเป็นเรื่องของระดับจิตใจและความรู้สึกของแต่ละบุคคล ไม่มีเกณฑ์วัดที่เป็นมาตรฐานสากล", "isCorrect": false }
+      ],
+      "hint": "คุณสมบัติที่ตีความได้ชัดเจนที่สุด ต้องเป็นรูปธรรม สามารถตรวจสอบได้จากเอกสาร หลักฐาน หรือคะแนนที่เป็นตัวเลขระบุชัด"
+    },
+    {
+      "question": "คำในข้อใดเขียนสะกดคำได้ถูกต้องตามพจนานุกรมฉบับราชบัณฑิตยสถานทุกคำ?",
+      "answerOptions": [
+        { "text": "ไอศกรีม , กะเพรา , สังเกต", "rationale": "ถูกต้อง! ไอศกรีม (ใช้ ร ควบ), กะเพรา (กะ ไม่มีรูปวรรณยุกต์และไม่มี ร ควบ), สังเกต (ไม่มี สระอุ ตรง ต)", "isCorrect": true },
+        { "text": "ไอศครีม , กระเพรา , สังเกตุ", "rationale": "ตัวลวงยอดฮิต ผิดหมดทั้งสามคำ! ที่ถูกคือ ไอศกรีม (ใช้ ก ไม่ใช่ ค), กะเพรา (ไม่มี ร ตรงกะ), สังเกต (ไม่มี สระอุ)", "isCorrect": false },
+        { "text": "ไอศกรีม , กระเพรา , สังเกต", "rationale": "ตัวลวงกึ่งกลาง คำว่า 'กระเพรา' ผิด ต้องเขียนว่า 'กะเพรา'", "isCorrect": false },
+        { "text": "ไอศครีม , กะเพรา , สังเกตุ", "rationale": "ตัวลวงกึ่งกลาง คำว่า 'ไอศครีม' ผิด (ต้องใช้ ก) และ 'สังเกตุ' ผิด (ต้องไม่มีสระอุ)", "isCorrect": false }
+      ],
+      "hint": "คำเหล่านี้เป็นคำที่คนไทยเขียนผิดบ่อยที่สุดในชีวิตประจำวัน โดยเฉพาะบนป้ายเมนูอาหารและข้อความโซเชียล"
+    },
+    {
+      "question": "ประโยคในข้อใดมีการใช้คำฟุ่มเฟือย (คำที่ไม่จำเป็นในประโยค) และควรปรับปรุงเพื่อให้ภาษาดูกระชับสละสลวยขึ้น?",
+      "answerOptions": [
+        { "text": "คณะกรรมการกำลังพิจารณาข้อเสนอของชาวบ้านอย่างเร่งด่วน", "rationale": "ตัวลวงกระชับ ประโยคนี้มีความหมายสมบูรณ์ กระชับ ได้ใจความชัดเจน ไม่มีคำฟุ่มเฟือย", "isCorrect": false },
+        { "text": "ทำการเปิดประตูหน้าต่างเพื่อให้อากาศถ่ายเทสะดวกขึ้น", "rationale": "ตัวลวงคำกริยาซ้อน คำว่า 'ทำการ' เป็นการละคำกริยาเกินจำเป็น สามารถตัดออกเหลือ 'เปิดประตูหน้าต่าง...' ได้ แต่ยังไม่ใช่ข้อที่ฟุ่มเฟือยที่สุด", "isCorrect": false },
+        { "text": "นักศึกษาทุกคนมีความจำเป็นที่จะต้องดำเนินการส่งรายงานภายในวันนี้", "rationale": "ถูกต้อง! มีคำฟุ่มเฟือยหลายจุด เช่น 'มีความจำเป็นที่จะต้องดำเนินการส่ง' ซึ่งสามารถปรับให้กระชับได้สละสลวยว่า 'นักศึกษาทุกคนต้องส่งรายงานภายในวันนี้'", "isCorrect": true },
+        { "text": "ต้นไม้ช่วยดูดซับก๊าซคาร์บอนไดออกไซด์และเพิ่มออกซิเจน", "rationale": "ตัวลวงวิทยาศาสตร์ เป็นประโยคสื่อสารเชิงวิทยาศาสตร์ที่มีประธาน กริยา กรรม ครบถ้วนตามบริบท ไม่มีความฟุ่มเฟือยของคำ", "isCorrect": false }
+      ],
+      "hint": "มองหาประโยคที่มีคำว่า 'มีความจำเป็นที่จะต้อง...', 'ทำการ...', 'ให้การ...' มารวมกันเยอะๆ ซึ่งถ้าตัดออกแล้วความหมายยังเหมือนเดิม"
+    },
+    {
+      "question": "พิจารณาข้อความต่อไปนี้:\n\"การดื่มน้ำมะนาวผสมน้ำอุ่นตอนเช้าช่วยล้างพิษในลำไส้ ทำให้ผิวพรรณสดใสเปล่งปลั่ง รักษามะเร็ง และลดความอ้วนได้ภายในหนึ่งสัปดาห์\"\n\nจากข้อความข้างต้น ผู้มีทักษะในการ \"อ่านจับใจความและคิดวิเคราะห์\" ควรตั้งข้อสังเกตเกี่ยวกับความน่าเชื่อถือในประเด็นใดเป็นอันดับแรก?",
+      "answerOptions": [
+        { "text": "การจัดวางรูปประโยคสลับที่ทำให้เข้าใจยาก", "rationale": "ตัวลวงโครงสร้าง โครงสร้างประโยคอ่านเข้าใจง่ายมาก แต่ปัญหาหลักอยู่ที่สาระและเนื้อหาของคำกล่าวอ้าง", "isCorrect": false },
+        { "text": "การอ้างสรรพคุณเกินจริงและขาดหลักฐานผลงานวิจัยทางวิทยาศาสตร์รองรับ", "rationale": "ถูกต้อง! การอ้างว่ารักษามะเร็งและลดความอ้วนได้ในหนึ่งสัปดาห์เป็นเรื่องที่เกินจริงทางการแพทย์ การอ่านข้อความลักษณะนี้ต้องคิดวิเคราะห์ความสมเหตุสมผลเป็นสำคัญ", "isCorrect": true },
+        { "text": "ไม่ระบุราคาของมะนาวว่าคุ้มค่ากับการลงทุนซื้อมาทานหรือไม่", "rationale": "ตัวลวงนอกประเด็น ราคาของมะนาวไม่เกี่ยวข้องกับความน่าเชื่อถือด้านสารัตถะเชิงสุขภาพของข้อความ", "isCorrect": false },
+        { "text": "คำว่า เปล่งปลั่ง เป็นคำโบราณที่ไม่ควรนำมาใช้ในปัจจุบัน", "rationale": "ตัวลวงไวยากรณ์ คำว่า เปล่งปลั่ง เป็นคำคุณศัพท์มาตรฐานในภาษาไทย สื่อความหมายได้ดี ไม่ใช่เหตุผลในการตัดความน่าเชื่อถือ", "isCorrect": false }
+      ],
+      "hint": "ความน่าเชื่อถือของสารงานเขียนประเภทสุขภาพ ต้องพิจารณาที่ความเป็นไปได้ทางวิทยาศาสตร์และการโฆษณาเกินจริง"
+    },
+    {
+      "question": "ข้อใดเลือกใช้คำราชาศัพท์ได้ถูกต้องตามฐานันดรศักดิ์ของ \"พระบาทสมเด็จพระเจ้าอยู่หัวฯ\"?",
+      "answerOptions": [
+        { "text": "ชาวบ้านร่วมกันทูลเกล้าทูลกระหม่อมถวายโฉนดที่ดินเพื่อสร้างโรงพยาบาล", "rationale": "ถูกต้อง! ของที่เป็นสิ่งของขนาดใหญ่ ยกลงถาดถวายไม่ได้ เช่น ที่ดิน รถยนต์ บ้าน โรงเรียน ต้องใช้คำว่า 'ทูลเกล้าทูลกระหม่อมถวาย' (เขียนย่อว่า ทูลเกล้าฯ ถวาย)", "isCorrect": true },
+        { "text": "ผู้ใหญ่บ้านนำกระเช้าผลไม้ไปน้อมเกล้าน้อมกระหม่อมถวายที่พระราชวัง", "rationale": "ตัวลวงสลับคำ กระเช้าผลไม้เป็นของเล็ก ยกใส่พานถวายได้ ต้องใช้คำว่า 'ทูลเกล้าฯ ถวาย' ไม่ใช่ น้อมเกล้าฯ ซึ่งใช้กับของใหญ่", "isCorrect": false },
+        { "text": "พระบาทสมเด็จพระเจ้าอยู่หัวทรงมีพระบรมราชโองการให้ความช่วยเหลือประชาชน", "rationale": "ตัวลวงไวยากรณ์คำราชาศัพท์ หน้าคำว่า 'พระบรมราชโองการ' ซึ่งเป็นคำราชาศัพท์อยู่แล้ว ให้ใช้คำว่า 'มี' หรือ 'ทรง' ตัวใดตัวหนึ่ง ไม่ใช้ 'ทรงมี' ซ้อนกัน", "isCorrect": false },
+        { "text": "ชาวไทยทุกคนล้วนปลาบปลื้มใจที่ได้เข้าเฝ้าพระบาทสมเด็จพระเจ้าอยู่หัว", "rationale": "ตัวลวงคำกริยา การพบราชาขั้นกษัตริย์ ต้องใช้คำว่า 'เข้าเฝ้าทูลละอองธุลีพระบาท' คำว่าเข้าเฝ้าเฉยๆ ใช้กับระดับพระองค์เจ้าหรือเจ้านายชั้นรอง", "isCorrect": false }
+      ],
+      "hint": "หลักจำ: ทูลเกล้าฯ ถวาย สำหรับของเล็กยกได้ / น้อมเกล้าฯ ถวาย สำหรับของใหญ่ยกไม่ได้ เช่น ที่ดิน อาหารชิ้นโต"
+    },
+    {
+      "question": "ประโยคในข้อใดจัดเป็น \"ประโยคความซ้อน\" (สังกรประโยค) ที่มีประโยคหลักและประโยคย่อยทำหน้าที่ขยาย?",
+      "answerOptions": [
+        { "text": "สมชายและสมหญิงช่วยกันกวาดใบไม้รอบศาลาวัดอย่างขยันขันแข็ง", "rationale": "ตัวลวงประโยคความรวม เป็นประโยคความรวม (รวมกริยา/ประธาน) สังเกตจากมีคำเชื่อมว่า 'และ'", "isCorrect": false },
+        { "text": "ฝนตกหนักน้ำจึงท่วมขังบริเวณถนนหน้าร้านค้าชุมชน", "rationale": "ตัวลวงประโยคความรวม เป็นประโยคความรวมที่เป็นเหตุเป็นผลกัน สังเกตจากคำว่า '...จึง...'", "isCorrect": false },
+        { "text": "คุณครูชื่นชมนักศึกษาที่มีความตั้งใจเรียนและมาเรียนอย่างสม่ำเสมอ", "rationale": "ถูกต้อง! เป็นประโยคความซ้อน โดยมีประโยคหลักคือ 'คุณครูชื่นชมนักศึกษา' และมีประโยคย่อยคือ 'นักศึกษามีความตั้งใจเรียน...' เชื่อมด้วยคำว่า 'ที่' (ประพรรธสรรพนาม)", "isCorrect": true },
+        { "text": "แดดเมืองไทยในเดือนเมษายนมีความร้อนจัดและอบอ้าวมาก", "rationale": "ตัวลวงประโยคความเดี่ยวขยายคำ เป็นประโยคความเดี่ยวที่มีส่วนขยายกริยาให้ยาวขึ้นด้วยคำเชื่อมบอกความสัมพันธ์ทั่วไป", "isCorrect": false }
+      ],
+      "hint": "ประโยคความซ้อนมักจะมีคำเชื่อมประโยคย่อย เช่น ที่, ซึ่ง, อัน, ผู้, เพื่อว่า, เพราะว่า"
+    },
+    {
+      "question": "หากคุณต้องการเขียน \"คำขวัญ\" ประจำหมู่บ้านเพื่อรณรงค์เรื่องการต่อต้านยาเสพติด ข้อใดใช้สัมผัสสระและสัมผัสอักษรได้คล้องจอง ถูกต้องตามลักษณะคำประพันธ์ และจดจำง่ายที่สุด?",
+      "answerOptions": [
+        { "text": "ยาเสพติดเป็นภัยต่อชีวิต ขืนไปคิดลองทำจะติดคุกแน่นอน", "rationale": "ตัวลวงร้อยแก้ว มีลักษณะเป็นประโยคบอกเล่าคำเตือนธรรมดา ไม่มีคำสัมผัสคล้องจองตามลักษณะของคำขวัญ", "isCorrect": false },
+        { "text": "ชุมชนปลอดภัย ห่างไกลยาเสพติด ร่วมแรงร่วมคิด สร้างชีวิตงดงาม", "rationale": "ถูกต้อง! มีการสัมผัสสระที่ถูกต้องและลงตัว: ภัย-ไกล , ติด-คิด , คิด-วิต สละสลวยและให้ความหมายในเชิงสร้างสรรค์จดจำง่าย", "isCorrect": true },
+        { "text": "รักครอบครัวต้องไม่ยุ่งเกี่ยวกับยาบ้า ยาไอซ์ ยานอนหลับ และสิ่งมึนเมาทุกชนิด", "rationale": "ตัวลวงรายการ เป็นการแจกแจงรายชื่อสารเสพติด ขาดความไพเราะและไม่มีระบบสัมผัสคล้องจอง", "isCorrect": false },
+        { "text": "หมู่บ้านเราจะเจริญรุ่งเรือง ถ้าทุกคนช่วยกันไล่คนค้ายาออกจากบ้านไปให้หมด", "rationale": "ตัวลวงรุนแรง ใช้ภาษาพูดอารมณ์เดือดดาล สื่อความหมายด้านเดียวและไม่เป็นคำขวัญที่มีสัมผัสคล้องจอง", "isCorrect": false }
+      ],
+      "hint": "คำขวัญที่ดีต้องสั้น กระชับ มีการส่งสัมผัสท้ายวรรคไปยังคำแรกๆ ของวรรคถัดไป (เช่น ใจ-ไกล, คิด-ชีวิต)"
+    },
+    {
+      "question": "ข้อความในข้อใดมีการใช้ \"ภาษาพูด\" (ภาษาระดับไม่เป็นทางการ) ปะปนอยู่ และไม่เหมาะสำหรับการนำไปเขียนในรายงานเชิงวิชาการ?",
+      "answerOptions": [
+        { "text": "จากการสำรวจพบว่าประชากรส่วนใหญ่ในชุมชนมีอาชีพเกษตรกรรม", "rationale": "ตัวลวงภาษาเขียน เป็นภาษาระดับทางการที่ถูกต้อง เหมาะสมสำหรับการเขียนรายงานทางวิชาการ", "isCorrect": false },
+        { "text": "ทางกลุ่มแม่บ้านได้จัดจำหน่ายสินค้าโอทอปสร้างรายได้เป็นกอบเป็นกำให้กับครอบครัว", "rationale": "ถูกต้อง! คำว่า 'เป็นกอบเป็นกำ' เป็นสำนวนและภาษาพูดระดับปาก ไม่ควรนำมาใช้ในรายงานเชิงวิชาการ ควรเปลี่ยนเป็น 'สร้างรายได้อย่างต่อเนื่องหรือจำนวนมาก'", "isCorrect": true },
+        { "text": "มาตรการแยกขยะมีผลช่วยลดปริมาณมลพิษในสิ่งแวดล้อมอย่างมีนัยสำคัญ", "rationale": "ตัวลวงวิชาการ ใช้คำศัพท์ทางเทคนิควิชาการ (มีนัยสำคัญ) เหมาะสมกับระดับรายงานวิจัยและวิชาการ", "isCorrect": false },
+        { "text": "ปัจจัยสำคัญที่มีผลต่อการตัดสินใจศึกษาต่อคือระยะทางและค่าใช้จ่าย", "rationale": "ตัว lวงทางการ โครงสร้างประโยคเป็นระเบียบ ใช้คำว่า 'ปัจจัย', 'ศึกษาต่อ' ซึ่งเป็นภาษาเขียนที่ถูกต้องสมบูรณ์", "isCorrect": false }
+      ],
+      "hint": "มองหาคำสแลง คำที่เป็นสำนวนติดปาก หรือภาษาพูดที่เราใช้คุยกับเพื่อนบ้าน เช่น เป็นกอบเป็นกำ, เยอะแยะ, สุดๆ"
+    },
+    {
+      "question": "เมื่อนักศึกษาต้องการค้นหาความหมายของคำศัพท์โบราณในวรรณคดีเรื่องขุนช้างขุนแผน วิธีการจัดเรียงคำตามพจนานุกรมในข้อใด ช่วยให้หาคำว่า \"กริ้ว\" \"กระหม่อม\" และ \"กษัตริย์\" พบได้รวดเร็วที่สุด?",
+      "answerOptions": [
+        { "text": "กริ้ว -> กระหม่อม -> กษัตริย์", "rationale": "ตัว lวงสับสน เรียงลำดับตัวควบแน่นสระสลับกันตามความคุ้นเคยสายตาแต่ผิดหลักพจนานุกรม", "isCorrect": false },
+        { "text": "กระหม่อม -> กษัตริย์ -> กริ้ว", "rationale": "ถูกต้อง! ตามหลักพจนานุกรม ให้ดูพยัญชนะตัวถัดไปเมื่อตัวแรก (ก) เหมือนกัน: ร มาก่อน ศ (กระหม่อม -> กษัตริย์) ส่วน 'กริ้ว' มีรูปสระอิ ซึ่งสระจะอยู่หลังพยัญชนะล้วนเสมอ", "isCorrect": true },
+        { "text": "กษัตริย์ -> กระหม่อม -> กริ้ว", "rationale": "ตัวลวงสลับที่ เอา ศ (กษัตริย์) ขึ้นก่อน ร (กระหม่อม) ซึ่งผิดหลักการเรียงพยัญชนะ ก-ฮ", "isCorrect": false },
+        { "text": "กริ้ว -> กษัตริย์ -> กระหม่อม", "rationale": "ตัวลวงรูปสระ พจนานุกรมไทยจะเรียงพยัญชนะล้วนให้หมดก่อน แล้วจึงตามด้วยคำที่มีรูปสระ ดังนั้นคำที่มีสระอิอย่าง 'กริ้ว' ต้องอยู่ทีหลังสุด", "isCorrect": false }
+      ],
+      "hint": "พจนานุกรมไทยเรียงตามรูปพยัญชนะ ก-ฮ ก่อน (โดย ร มาก่อน ศ) และคำที่ไม่มีรูปสระจะมาก่อนคำที่มีรูปสระเสมอ"
+    },
+    {
+      "question": "ข้อใดเป็นจุดประสงค์หลักของการเขียน \"ย่อความ\" จากหนังสือหรือบทความข่าวยาวๆ?",
+      "answerOptions": [
+        { "text": "เพื่อเปลี่ยนแปลงเนื้อหาเดิมให้สนุกสนานตื่นเต้นเร้าใจยิ่งขึ้น", "rationale": "ตัวลวงบิดเบือน การย่อความห้ามบิดเบือนหรือเปลี่ยนอารมณ์ของเนื้อหาต้นฉบับเด็ดขาด", "isCorrect": false },
+        { "text": "เพื่อเก็บบันทึกใจความสำคัญของเรื่องอย่างครบถ้วน ถูกต้อง และกระชับ โดยใช้สำนวนภาษาของตนเอง", "rationale": "ถูกต้อง! หัวใจของการย่อความคือการเก็บประเด็นหลัก สาระสำคัญไม่ให้ตกหล่น ตัดส่วนขยายที่ฟุ่มเฟือยออก และเขียนใหม่ด้วยภาษาที่กระชับของตนเอง", "isCorrect": true },
+        { "text": "เพื่อคัดลอกข้อความทุกตัวอักษรจากต้นฉบับลงมาโดยไม่มีการแก้ไข", "rationale": "ตัวลวงคัดลอก ข้อนั้นเรียกว่าการคัดลอกสำเนา ไม่ใช่การย่อความ", "isCorrect": false },
+        { "text": "เพื่อเขียนวิจารณ์และแสดงความรู้สึกส่วนตัวว่าเห็นด้วยกับผู้เขียนเดิมหรือไม่", "rationale": "ตัวลวงวิจารณ์ การแสดงความรู้สึกส่วนตัวจัดเป็นการเขียนวิจารณ์หรือบทความสะท้อนคิด ห้ามเอาไปปนกับการย่อความ", "isCorrect": false }
+      ],
+      "hint": "การย่อความคือการตัดส่วนที่เป็น 'น้ำ' (ตัวอย่าง, ส่วนขยาย) ออกให้เหลือแต่ 'เนื้อ' (ใจความหลัก) โดยห้ามเพิ่มความเห็นส่วนตัว"
+    },
+    {
+      "question": "คำว่า \"บาท\" ในข้อใด เป็นคำพ้องเสียงที่มีความหมายเกี่ยวเนื่องกับ \"ระบบวรรณคดีหรือคำประพันธ์ไทย\"?",
+      "answerOptions": [
+        { "text": "คุณแม่ให้เงินฉันมาโรงเรียนวันละ ๑๐๐ บาท", "rationale": "ตัวลวงการเงิน บาท ในข้อนี้หมายถึงหน่วยตราเงินตราของสกุลเงินไทย", "isCorrect": false },
+        { "text": "พระภิกษุสงฆ์อุ้มบาตรออกมารับอาหารจากชาวบ้านตอนรุ่งเช้า", "rationale": "ตัวลวงคำพ้องรูปคำพ้องเสียง 'บาตร' ในข้อนี้เขียนต่างกัน (ตร) หมายถึงภาชนะรับอาหารของพระสงฆ์", "isCorrect": false },
+        { "text": "บทกลอนบทนี้มีทั้งหมด ๔ วรรค รวมเป็น ๒ บาท", "rationale": "ถูกต้อง! ในทางฉันทลักษณ์วรรณคดีไทย 'บาท' คือส่วนหนึ่งของบทคำประพันธ์ (โดยปกติ ๒ วรรค รวมเป็น ๑ บาท)", "isCorrect": true },
+        { "text": "เขารีบวิ่งจนสะดุดก้อนหินทำให้บาทเจ็บและมีเลือดไหล", "rationale": "ตัวลวงกายวิภาค บาท ในบริบทนี้มาจากคำศัพท์ราชาศัพท์หรือบาลีสันสกฤตที่แปลว่า 'เท้า' (เช่น บาทา)", "isCorrect": false }
+      ],
+      "hint": "คำพ้องเสียงคือเขียนต่างกันหรือเหมือนกันแต่เสียงเหมือนกัน ในที่นี้ต้องหาคำว่า 'บาท' ที่เกี่ยวกับจำนวนแถวหรือโครงสร้างของบทกลอน"
+    },
+    {
+      "question": "หากนักศึกษาต้องการเขียนจดหมายอิเล็กทรอนิกส์ (E-mail) สมัครงาน สิ่งใด \"ไม่ควรปฏิบัติ\" เพราะแสดงถึงการขาดมารยาทในการสื่อสารทางดิจิทัล?",
+      "answerOptions": [
+        { "text": "การระบุหัวข้อเมล (Subject) ให้ชัดเจนว่าสมัครงานตำแหน่งใด", "rationale": "ตัวลวงสิ่งที่ดี การระบุหัวข้อชัดเจนเป็นสิ่งที่ควรทำอย่างยิ่งเพื่อให้ผู้รับรู้จุดประสงค์ทันที", "isCorrect": false },
+        { "text": "การใช้ภาษาพูดที่เป็นกันเอง เช่น 'หวัดดีครับพี่ มารับผมเข้าทำงานหน่อยนะ' เพื่อแสดงความสนิทสนม", "rationale": "ถูกต้อง! การสมัครงานเป็นเรื่องทางการ การใช้ภาษาพูดที่เล่นเกินไปแสดงถึงการขาดกาละเทศะ ขาดความมืออาชีพ และไร้มารยาทการเขียน", "isCorrect": true },
+        { "text": "การแนบไฟล์เอกสารประวัติส่วนตัว (Resume) เป็นไฟล์ประเภท PDF", "rationale": "ตัวลวงเครื่องมือ การส่งไฟล์ PDF เป็นมาตรฐานสากลที่ถูกต้อง เพราะช่วยป้องกันไม่ให้หน้าเอกสารและสระเคลื่อน", "isCorrect": false },
+        { "text": "การเขียนคำขึ้นต้นและคำลงท้ายด้วยความสุภาพเรียบร้อย", "rationale": "ตัวลวงมารยาท เป็นมารยาทพื้นฐานที่จำเป็นต้องทำในการสื่อสารทุกชนิด", "isCorrect": false }
+      ],
+      "hint": "มองหาข้อที่เป็นพฤติกรรมเชิงลบ ลิดรอนความน่าเชื่อถือของการติดต่อสื่อสารทางธุรกิจหรือการสมัครงาน"
+    },
+    {
+      "question": "ข้อความในข้อใด มีการใช้คำที่มีความหมายแฝงในเชิงลบ (ไม่ตรงตามตัวอักษรดั้งเดิม) และเป็นการเหน็บแนมบุคคล?",
+      "answerOptions": [
+        { "text": "ชาวบ้านช่วยกันเลี้ยงสุนัขจิ้งจอกที่บาดเจ็บไว้ในกรงหลังหมู่บ้าน", "rationale": "ตัวลวงความหมายตรง สุนัขจิ้งจอกในที่นี้คือสัตว์ป่าจริงๆ ตามความหมายตรงในพจนานุกรม", "isCorrect": false },
+        { "text": "เขาทำงานเก่งและว่องไวเหมือนลิงที่ปีนป่ายอยู่บนต้นไม้", "rationale": "ตัวลวงอุปมาอุปไมย เป็นการเปรียบเทียบเชิงอุปมาอุปไมยในแง่ความเร็ว (ความหมายตรงกึ่งเปรียบเทียบ) ไม่ใช่การเหน็บแนมเชิงลบ", "isCorrect": false },
+        { "text": "นักการเมืองคนนั้นทำตัวเป็นสุนัขจิ้งจอกเจ้าเล่ห์ที่คอยหาผลประโยชน์จากชาวบ้านตลอดเวลา", "rationale": "ถูกต้อง! คำว่า 'สุนัขจิ้งจอก' ในบริบทนี้เป็นความหมายแฝง ( connotation) สื่อถึง ความเจ้าเล่ห์ ไม่ซื่อสัตย์ ไว้วางใจไม่ได้ ซึ่งเป็นเชิงลบ", "isCorrect": true },
+        { "text": "สุนัขเป็นสัตว์เลี้ยงที่มีความซื่อสัตย์ต่อเจ้าของมากที่สุดชนิดหนึ่ง", "rationale": "ตัวลวงความหมายตรง เป็นข้อความบอกเล่าลักษณะนิสัยตามธรรมชาติของสัตว์เลี้ยงทั่วไป สื่อสารความหมายตรงตัว", "isCorrect": false }
+      ],
+      "hint": "ความหมายแฝงคือการนำลักษณะของสิ่งหนึ่ง (เช่น สัตว์) ไปเปรียบเทียบกับพฤติกรรมหรือนิสัยนิรนามของมนุษย์ในแง่ดีหรือแง่ร้าย"
+    },
+    {
+      "question": "เมื่ออ่านบทกลอนต่อไปนี้:\n\"อันความคิดวิทยาเหมือนอาวุธ ประเสริฐสุดซ่อนใส่ในฝักไว้\nเมื่อถึงคราวสู้รบจึงชักไป ให้เห็นชัยชนะอวดแก่ศัตรู\"\n\nผู้แต่งต้องการเน้นย้ำและสั่งสอนผู้อ่านในเรื่องใดมากที่สุด?",
+      "answerOptions": [
+        { "text": "สอนให้ทุกคนหมั่นพกพาอาวุธติดตัวไว้ตลอดเวลาเพื่อป้องกันภัย", "rationale": "ตัวลวงแปลตรงตัว เป็นการแปลความหมายตรงตัวอักษรเกินไป บทกลอนนี้ใช้ 'อาวุธ' เป็นเพียงคำอุปมาเปรียบเทียบกับความรู้", "isCorrect": false },
+        { "text": "สอนให้เป็นผู้มีความรู้ความสามารถ แต่รู้จักเก็บงำไว้ใช้ในเวลาที่เหมาะสม ไม่แสดงตนโอ้อวดโดยไม่จำเป็น", "rationale": "ถูกต้อง! 'วิทยาเหมือนอาวุธ...ซ่อนใส่ในฝักไว้' สื่อถึงการมีความรู้แต่ให้เก็บไว้อย่างนอบน้อม และจะนำออกมาใช้ (ชักไป) เมื่อถึงเวลาจำเป็นจริงเท่านั้น", "isCorrect": true },
+        { "text": "สอนให้เราต้องหาทางเอาชนะศัตรูด้วยความรุนแรงและการทำสงคราม", "rationale": "ตัวลวงความรุนแรง กลอนมุ่งเน้นเรื่องสติปัญญาและการวางตัว ไม่ใช่การส่งเสริมการทำสงครามหรือความรุนแรงทางกายภาพ", "isCorrect": false },
+        { "text": "สอนให้ช่างตีดาบทำฝักดาบที่สวยงามและประเสริฐที่สุดเพื่อส่งขาย", "rationale": "ตัวลวงหลุดประเด็น นำคำว่าฝักและอาวุธไปตีความโยงเข้ากับอุตสาหกรรมการผลิต ซึ่งห่างไกลจากแก่นเรื่องการศึกษา", "isCorrect": false }
+      ],
+      "hint": "วิเคราะห์คำว่า 'วิทยา' (ความรู้) เปรียบเหมือน 'อาวุธ' ที่ต้อง 'ซ่อนในฝัก' (เก็บงำไว้ไม่โอ้อวด) และใช้เมื่อ 'ถึงคราว' (เวลาที่จำเป็น)"
+    }
+  ]
+};
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+let state = {
+  isStarted: false,
+  studentName: '',
+  studentId: '',
+  studentLevel: 'สกร. ระดับประถมศึกษา',
+  questions: [],
+  current: 0,
+  answers: [],
+  checked: []
+};
+
+function initQuiz() {
+  let shuffled = shuffleArray([...quizData.questions]);
+  shuffled = shuffled.map(q => {
+    let opts = shuffleArray([...q.answerOptions]);
+    return { ...q, answerOptions: opts };
+  });
+
+  state.questions = shuffled;
+  state.current = 0;
+  state.answers = new Array(shuffled.length).fill(null);
+  state.checked = new Array(shuffled.length).fill(false);
+}
+
+function startQuiz() {
+  const nameInput = document.getElementById('input-name').value.trim();
+  const idInput = document.getElementById('input-id').value.trim();
+  
+  if (!nameInput || !idInput) {
+    alert('⚠️ กรุณากรอกชื่อ-นามสกุล และรหัสนักศึกษาให้ครบถ้วนก่อนเริ่มทำข้อสอบครับ');
+    return;
+  }
+  
+  state.studentName = nameInput;
+  state.studentId = idInput;
+  state.isStarted = true;
+  
+  initQuiz();
+  renderApp();
+}
+
+function renderApp() {
+  const app = document.getElementById('quiz-app');
+  
+  if (!state.isStarted) {
+    app.innerHTML = `
+      <div class="card" style="animation: fadeIn 0.4s ease; text-align: center;">
+        <div class="emoji-banner">📚 ✍️ 🗣️ 📖 🇹🇭</div>
+        <h2 style="font-size: 18px; margin-bottom: 18px; color: var(--primary); font-weight: 700;">ลงทะเบียนเข้าทดสอบ N-NET วิชาภาษาไทย</h2>
+        <p style="font-size:14px; color: var(--text-muted); margin-bottom:20px;">ชุดที่ 5: ยกระดับความท้าทาย ฝึกการคิดวิเคราะห์จับผิดตัวลวงภาษา</p>
+        
+        <div class="form-group">
+          <label for="input-name">ชื่อ - นามสกุล ผู้เข้าสอบ *</label>
+          <input type="text" id="input-name" class="form-control" placeholder="กรอกชื่อและนามสกุลของคุณ" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="input-id">รหัสนักศึกษา สกร. *</label>
+          <input type="text" id="input-id" class="form-control" placeholder="กรอกรหัสประจำตัวผู้เรียน" required>
+        </div>
+        
+        <div class="form-group">
+          <label>ระดับชั้น / หลักสูตร</label>
+          <input type="text" class="form-control" value="${state.studentLevel}" disabled style="background-color: #f1f5f9; font-weight: 600; color: var(--primary-dark)">
+        </div>
+        
+        <button class="btn btn-primary" onclick="startQuiz()" style="width: 100%; margin-top: 12px; font-size: 16px;">✍️ เริ่มทำแบบทดสอบ (ชุดที่ 5)</button>
+      </div>
+    `;
+    return;
+  }
+
+  if (state.current >= state.questions.length) {
+    renderSummary(app);
+    return;
+  }
+
+  const q = state.questions[state.current];
+  const pct = Math.round((state.current / state.questions.length) * 100);
+  const selectedIdx = state.answers[state.current];
+  const isChecked = state.checked[state.current];
+
+  let hintHtml = q.hint ? `<div class="hint-box">💡 <b>กลวิธีคิดวิเคราะห์:</b> ${q.hint}</div>` : '';
+  
+  let optionsHtml = q.answerOptions.map((opt, idx) => {
+    let cls = 'option-item';
+    if (selectedIdx === idx) cls += ' selected';
+    if (isChecked) {
+      cls += ' disabled';
+      if (opt.isCorrect) cls += ' correct-reveal';
+      else if (selectedIdx === idx) cls += ' wrong-reveal';
+    }
+    return `
+      <div class="${cls}" onclick="selectAnswer(${idx})">
+        <span class="radio-dot"></span>
+        <div style="flex-grow:1;">${opt.text}</div>
+      </div>
+    `;
+  }).join('');
+
+  let feedbackHtml = '';
+  if (isChecked && selectedIdx !== null) {
+    const isCorrect = q.answerOptions[selectedIdx].isCorrect;
+    const rationale = q.answerOptions[selectedIdx].rationale;
+    feedbackHtml = `
+      <div class="rationale-box ${isCorrect ? 'correct' : 'wrong'}">
+        <b>${isCorrect ? '✨ ยอดเยี่ยม! ตอบถูกหลักภาษา' : '❌ จุดที่ข้อสอบลวงคุณ'}</b> — ${rationale}
+      </div>
+    `;
+  }
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="progress-container">
+        <span><b>ข้อที่ ${state.current + 1}</b> จาก ${state.questions.length}</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <span>${pct}% เสร็จสิ้น</span>
+      </div>
+      
+      <div class="question-text">${q.question}</div>
+      ${hintHtml}
+      <div class="options-list">${optionsHtml}</div>
+      ${feedbackHtml}
+
+      <div class="nav-actions">
+        <button class="btn btn-secondary" onclick="goPrev()" ${state.current === 0 ? 'disabled' : ''}>⬅️ ข้อก่อนหน้า</button>
+        ${!isChecked ? 
+          `<button class="btn btn-primary" onclick="checkAnswer()" ${selectedIdx === null ? 'disabled' : ''}>✔️ ส่งตรวจคำตอบ</button>` :
+          `<button class="btn btn-primary" onclick="goNext()">${state.current === state.questions.length - 1 ? '🏁 ดูใบรายงานผลสอบ' : 'ข้อถัดไป ➡️'}</button>`
+        }
+      </div>
+    </div>
+  `;
+}
+
+function renderSummary(app) {
+  let score = 0;
+  let reviewHtml = '';
+
+  state.questions.forEach((q, i) => {
+    const userAnsIdx = state.answers[i];
+    const isCorrect = userAnsIdx !== null && q.answerOptions[userAnsIdx].isCorrect;
+    if (isCorrect) score++;
+
+    let correctOpt = q.answerOptions.find(o => o.isCorrect);
+    let userOpt = userAnsIdx !== null ? q.answerOptions[userAnsIdx] : null;
+
+    reviewHtml += `
+      <div class="review-item">
+        <div style="font-weight:600;margin-bottom:6px;color:var(--text)">ข้อ ${i+1}: ${q.question.replace(/\n/g, '<br>')}</div>
+        <div style="color:${isCorrect ? 'var(--green)' : 'var(--red)'}; font-weight:600; font-size:14px;">
+          ${isCorrect ? '🔹 ผลการตอบ: ถูกต้อง' : `🔸 ผลการตอบ: ผิด (คำตอบของคุณ: ${userOpt ? userOpt.text : 'ไม่เลือกคำตอบ'})`}
+        </div>
+        <div style="color:var(--text-muted);font-size:13px;margin-top:4px;background:#f8fafc;padding:8px;border-radius:6px;">
+          <b>💡 เจาะลึกเหตุผลหลักอักขระวิธี:</b> ${correctOpt ? correctOpt.rationale : ''}
+        </div>
+      </div>
+    `;
+  });
+
+  const pct = Math.round((score / state.questions.length) * 100);
+  const isPass = pct >= 60;
+  const grade = isPass ? "ผ่านเกณฑ์ประเมินทักษะภาษาขั้นสูง 🎓" : "ต้องกลับไปทบทวนการวิเคราะห์ตัวลวง 📘";
+  const gc = isPass ? "grade-pass" : "grade-fail";
+  const msg = isPass ? "สุดยอดมาก! คุณมีทักษะในการใช้ภาษาไทยเพื่อการสื่อสารในชีวิตประจำวันอย่างรอบคอบ แยกแยะข้อคิดเห็น คัดกรองความหมายแฝง และรู้เท่าทันสื่อได้อย่างสมบูรณ์" : "ข้อสอบชุดนี้ค่อนข้างยากและมีตัวลวงไวยากรณ์/ระดับภาษาที่แนบเนียน แนะนำให้อ่านคำอธิบายเฉลยละเอียดด้านล่างเพื่อเพิ่มเทคนิคการทำข้อสอบจริงครับ";
+
+  app.innerHTML = `
+    <div class="card summary-card">
+      <div style="font-size:40px;margin-bottom:8px;">🏆</div>
+      <h2 style="font-size:22px; margin-bottom:4px; color: var(--primary); font-weight:700;">ใบรายงานผลคะแนนวิชาภาษาไทย</h2>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">สถาบันส่งเสริมการเรียนรู้ (สกร.) ระดับประถมศึกษา</div>
+      
+      <div class="student-info-box">
+        <p>👤 <b>ชื่อนักศึกษา:</b> ${state.studentName}</p>
+        <p>🆔 <b>รหัสประจำตัว:</b> ${state.studentId}</p>
+        <p>🏫 <b>ชุดข้อสอบ:</b> ${state.studentLevel} (ชุดที่ 5)</p>
+      </div>
+
+      <div style="font-size:16px;color:var(--text); margin-top:14px;">ทำคะแนนได้รวม <b>${score}</b> คะแนน จากทั้งหมด <b>${state.questions.length}</b> ข้อ</div>
+      <div style="margin:10px 0;"><span class="grade-pill ${gc}">${grade}</span></div>
+      <div style="color:var(--text-muted);margin-bottom:16px;font-size:14px;padding:0 10px;">${msg}</div>
+      
+      <div class="grid-stats">
+        <div class="stat-box"><div class="stat-num" style="color:var(--green)">${score}</div><div class="slbl">ถูกต้อง (ข้อ)</div></div>
+        <div class="stat-box"><div class="stat-num" style="color:var(--red)">${state.questions.length - score}</div><div class="slbl">ผิดพลาด (ข้อ)</div></div>
+        <div class="stat-box"><div class="stat-num" style="color:var(--primary)">${pct}%</div><div class="slbl">คิดเป็นเปอร์เซ็นต์</div></div>
+      </div>
+      
+      <p style="font-size:12px; color:var(--primary); font-weight:600; margin-bottom:18px; background:var(--primary-light); padding:6px; border-radius:6px;">📸 สามารถบันทึกภาพหน้าจอนี้เพื่อส่งรายงานผลการเรียนรู้แก่คุณครูประจำกลุ่มได้ทันที</p>
+      
+      <button class="btn btn-primary" onclick="restartQuiz()">🔄 เริ่มทำใหม่อีกรอบ (ระบบจะสุ่มสลับข้อสอบ)</button>
+    </div>
+    
+    <div class="card" style="margin-top:6px;">
+      <div class="review-title">📋 เฉลยละเอียดและบทวิเคราะห์ข้อสอบชุดที่ 5</div>
+      ${reviewHtml}
+    </div>
+  `;
+}
+
+function selectAnswer(i) { if (!state.checked[state.current]) { state.answers[state.current] = i; renderApp(); } }
+function checkAnswer()   { if (state.answers[state.current] !== null) { state.checked[state.current] = true; renderApp(); } }
+function goNext()        { state.current++; renderApp(); }
+function goPrev()        { if (state.current > 0) { state.current--; renderApp(); } }
+function restartQuiz()   { state.isStarted = false; renderApp(); }
+
+renderApp();
+</script>
+</body>
+</html>
